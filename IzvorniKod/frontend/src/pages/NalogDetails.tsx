@@ -39,6 +39,8 @@ const NalogDetails: React.FC = () => {
     );
   }
 
+  
+
   return (
     <div className="nalog-details">
       <Link to="/" className="close-button">
@@ -51,6 +53,14 @@ const NalogDetails: React.FC = () => {
       <p>
         <strong>Status:</strong> {nalog.statusNalog}
       </p>
+
+      <p>
+        Dodaj Stavke Na Nalog
+      </p>
+      <button className="open-form-button">
+        <Link to={`/StavkaNalogaForm/${nalogId}`}>Dodaj Očitavanje</Link>
+      </button>
+      
 
       <h3>Stavke Naloga</h3>
       <ul>

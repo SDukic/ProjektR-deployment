@@ -1,109 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './StavkaNalogaForm.css';
 
-// Define Brojilo type
-/**
- * Brojilo type definition
- */
 type Brojilo = {
   id: number;
   serijskiBrojBrojilo: string;
-  tipBrojila?: string;
-  adresa?: string;
+  tipBrojila: string;
+  adresa: string;
 };
 
-const StavkaNalogaForm = ({ nalogId, onSubmit }: { nalogId: number; onSubmit: (stavka: { idNalog: number; idBrojilo: number; }) => void; }) => {
+const BrojiloSelectorForm = () => {
   const [brojila, setBrojila] = useState<Brojilo[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedBrojilo, setSelectedBrojilo] = useState<Brojilo | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [selectedBrojiloId, setSelectedBrojiloId] = useState<number | null>(null);
 
-  // Fetch brojila from the API
   useEffect(() => {
     const fetchBrojila = async () => {
-      setLoading(true);
       try {
-        const response = await axios.get('/api/brojila/all');
-        setBrojila(response.data);
+        const response = await axios.get('http://localhost:8080/api/brojila/all');
+        const data = response.data;
+
+        if (Array.isArray(data)) {
+          setBrojila(data);
+        } else {
+          console.error('API did not return an array:', data);
+          setBrojila([]);
+        }
       } catch (error) {
         console.error('Error fetching brojila:', error);
-      } finally {
-        setLoading(false);
+        setBrojila([]);
       }
     };
 
     fetchBrojila();
   }, []);
 
-  // Filter brojila based on search term
-  const filteredBrojila = brojila.filter(brojilo => {
-    const search = searchTerm.toLowerCase();
-    return (
-      brojilo.serijskiBrojBrojilo.toLowerCase().includes(search) ||
-      (brojilo.tipBrojila || '').toLowerCase().includes(search) ||
-      (brojilo.adresa || '').toLowerCase().includes(search)
-    );
-  });
+  const handleSelection = (id: number) => {
+    setSelectedBrojiloId(id);
+  };
 
-  // Handle form submission
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (selectedBrojilo) {
-      const stavkaNaloga = {
-        idNalog: nalogId,
-        idBrojilo: selectedBrojilo.id
-      };
-      onSubmit(stavkaNaloga);
+    if (selectedBrojiloId) {
+      alert(`Selected Brojilo ID: ${selectedBrojiloId}`);
     } else {
       alert('Please select a brojilo.');
     }
   };
 
   return (
-    <div className="stavka-naloga-form">
-      <h2 className="form-title">Create Stavka Naloga</h2>
-      <form onSubmit={handleSubmit} className="form-container">
-        <div className="form-group">
-          <label htmlFor="search" className="form-label">Search Brojila:</label>
-          <input
-            id="search"
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search by serial number, type, or address"
-            className="form-input"
-          />
-        </div>
-
-        {loading ? (
-          <p className="loading-text">Loading brojila...</p>
+    <div className="brojilo-selector-form">
+      <h2>Select a Brojilo</h2>
+      <form onSubmit={handleSubmit}>
+        {brojila.length === 0 ? (
+          <p>Učitavanje brojila...</p>
         ) : (
-          <div className="brojila-list">
-            <h3 className="list-title">Select Brojilo:</h3>
-            <ul className="list-container">
-              {filteredBrojila.map(brojilo => (
-                <li key={brojilo.id} className="list-item">
-                  <label className="radio-label">
-                    <input
-                      type="radio"
-                      name="brojilo"
-                      value={brojilo.id}
-                      onChange={() => setSelectedBrojilo(brojilo)}
-                      className="radio-input"
-                    />
-                    {`Serijski Broj: ${brojilo.serijskiBrojBrojilo}, Tip: ${brojilo.tipBrojila || 'N/A'}, Adresa: ${brojilo.adresa || 'N/A'}`}
-                  </label>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="brojila-list">
+            {brojila.map((brojilo) => (
+              <li key={brojilo.id} className="brojilo-item">
+                <label>
+                  <input
+                    type="radio"
+                    name="brojilo"
+                    value={brojilo.id}
+                    onChange={() => handleSelection(brojilo.id)}
+                  />
+                  {`Serijski Broj: ${brojilo.serijskiBrojBrojilo}, Tip: ${brojilo.tipBrojila}, Adresa: ${brojilo.adresa}`}
+                </label>
+              </li>
+            ))}
+          </ul>
         )}
-
-        <button type="submit" className="submit-button">Submit</button>
+        <button type="submit" className="submit-button">
+          Submit
+        </button>
       </form>
     </div>
   );
 };
 
-export default StavkaNalogaForm;
+export default BrojiloSelectorForm;
