@@ -1,0 +1,140 @@
+### brojila/all
+GET http://localhost:8080/api/brojila/all
+Accept: application/json
+
+### kupci/all
+GET http://localhost:8080/api/kupci/all
+Accept: application/json
+
+### nalozi/all
+GET http://localhost:8080/api/nalozi/all
+Accept: application/json
+
+### nalozi/radnik/{id} - jos testirati
+GET http://localhost:8080/api/nalozi/radnik/1
+Accept: application/json
+
+### ocitanja/all
+GET http://localhost:8080/api/ocitanja/all
+Accept: application/json
+
+### radnici/all
+GET http://localhost:8080/api/radnici/all
+Accept: application/json
+
+### stavkenaloga/all
+GET http://localhost:8080/api/stavkenaloga/all
+Accept: application/json
+
+### kupci/create
+POST http://localhost:8080/api/kupci/create
+Content-Type: application/json
+
+{
+  "imeKupac": "Ime",
+  "prezimeKupac": "Prezime",
+  "telefonKupac": "0991234567"
+}
+
+### kupci/delete/{id}
+POST http://localhost:8080/api/kupci/delete/9
+
+### radnici/create
+POST http://localhost:8080/api/radnici/create
+Content-Type: application/json
+
+{
+  "imeRadnik": "Ime",
+  "prezimeRadnik": "Prezime",
+  "telefonRadnik": "0991234567"
+}
+
+### kupci/delete/{id}
+POST http://localhost:8080/api/kupci/delete/9
+
+### ocitanja/create
+POST http://localhost:8080/api/ocitanja/create
+Content-Type: application/json
+
+{
+  "datumOcitavanja": "2023-12-22T10:15:30Z",
+  "tarifaVisoka": 123.45,
+  "tarifaNiska": 67.89,
+  "komentar": "Očitavanje je obavljeno bez problema.",
+  "idNalog": {
+    "id": 1
+  }
+}
+
+### ocitanja/delete/{id}
+POST http://localhost:8080/api/ocitanja/delete/11
+
+### nalozi/create
+POST http://localhost:8080/api/nalozi/create
+Content-Type: application/json
+
+{
+  "datumNalog": "2024-12-24T10:00:00Z",
+  "statusNalog": "Aktivan",
+  "idRadnik": {
+    "id": 1
+  },
+  "ocitanja": [
+    {
+      "datumOcitavanja": "2024-12-23T14:00:00Z",
+      "tarifaVisoka": 123.45,
+      "tarifaNiska": 67.89,
+      "komentar": "Redovno očitanje"
+    },
+    {
+      "datumOcitavanja": "2024-12-24T09:30:00Z",
+      "tarifaVisoka": 234.56,
+      "tarifaNiska": 78.90,
+      "komentar": "Vanredno očitanje"
+    }
+  ],
+  "stavkaNalogas": [
+    {
+      "adresaBrojila": "Adresa brojila 1",
+      "idBrojilo": {
+        "id": 9
+      }
+    },
+    {
+      "adresaBrojila": "Adresa brojila 2",
+      "idBrojilo": {
+        "id": 10
+      }
+    }
+  ]
+}
+
+### nalozi/{id}/addstavka
+POST http://localhost:8080/api/nalozi/15/addstavka
+content-type: application/json
+
+{
+  "adresaBrojila": "Adresa brojila 123",
+  "idBrojilo": {
+    "id": 10
+  }
+}
+
+### nalozi/delete/{id}
+POST http://localhost:8080/api/nalozi/delete/14
+
+### stavkenaloga/create
+POST http://localhost:8080/api/stavkenaloga/create
+Content-Type: application/json
+
+{
+  "idBrojilo": {
+    "id": 6
+  },
+  "idNalog": {
+    "id": 9
+  }
+}
+
+### stavkenaloga/delete/{id}
+POST http://localhost:8080/api/stavkenaloga/delete/11

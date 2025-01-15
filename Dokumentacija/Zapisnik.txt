@@ -1,0 +1,11 @@
+Petar Kapec kreirao git repozitorij 18. 10. 2024.
+
+9.10.2024. u 16:00, na FER-u. Na sastanku sudjelovali svi članovi te smo se sastali s mentorom. Nakon sastanka s mentorom su raspodijeljeni poslovi u prvim fazama razvoja.
+
+14.10.2024. u 16:00, u krugu FER-a. Na sastanku sudjelovali svi članovi te smo prokomentirali napredak u prvi fazama razvoja i proučavanju potrebnih tehnologija.
+
+28.10.2024. u 16:00, Online. Priprema za rad na planu projekta, funkcijskih zahtjeva i UML dijagrama.
+
+04.11.2024. u 16:00, u krugu FER-a. Na sastanku sudjelovali svi članovi te smo odradili većinski dio posla u pripremi za predaju plana projekta. Također smo radili funkcijske zahtjeve i UML dijagrame te dizajn frontend dijela web aplikacije.
+
+7.11.2024. u 19:00, Online. Rad na projektu, ispravljanje grešaka u bazi podataka, rad na opisu baze podataka. Kreirana relacijska shema te relacijski model u obliku SQL naredbi. Nastavljamo razvoj funkcijskih zahtjeva i UML dijagrama.

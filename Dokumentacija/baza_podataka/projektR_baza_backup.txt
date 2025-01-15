@@ -1,0 +1,119 @@
+
+CREATE TABLE KUPAC (
+    Id_kupac SERIAL PRIMARY KEY,
+    ime_kupac VARCHAR(50) NOT NULL,
+    prezime_kupac VARCHAR(50) NOT NULL,
+    telefon_kupac VARCHAR(20)
+);
+
+CREATE TABLE BROJILO (
+    Id_brojilo SERIAL PRIMARY KEY,
+    serijski_broj_brojilo VARCHAR(50) NOT NULL,
+    tip_brojila VARCHAR(50),
+    adresa VARCHAR(100),
+    Id_kupac INT,
+    FOREIGN KEY (Id_kupac) REFERENCES KUPAC(Id_kupac)
+);
+
+CREATE TABLE RADNIK (
+    Id_radnik SERIAL PRIMARY KEY,
+    ime_radnik VARCHAR(50) NOT NULL,
+    prezime_radnik VARCHAR(50) NOT NULL,
+    telefon_radnik VARCHAR(20)
+);
+
+CREATE TABLE NALOG (
+    Id_nalog SERIAL PRIMARY KEY,
+    datum_nalog TIMESTAMP NOT NULL,
+    status_nalog VARCHAR(50),
+    Id_radnik INT,
+    FOREIGN KEY (Id_radnik) REFERENCES RADNIK(Id_radnik)
+);
+
+CREATE TABLE STAVKA_NALOGA (
+    Id_stavka SERIAL PRIMARY KEY,
+    Id_nalog INT,
+    Id_brojilo INT,
+    adresa_brojila VARCHAR(100),
+    FOREIGN KEY (Id_nalog) REFERENCES NALOG(Id_nalog),
+    FOREIGN KEY (Id_brojilo) REFERENCES BROJILO(Id_brojilo)
+);
+
+CREATE TABLE OCITANJE (
+    Id_ocitanje SERIAL PRIMARY KEY,
+    datum_ocitavanja TIMESTAMP NOT NULL,
+    tarifa_visoka DECIMAL(10,2),
+    tarifa_niska DECIMAL(10,2),
+    komentar TEXT,
+    Id_nalog INT,
+    FOREIGN KEY (Id_nalog) REFERENCES NALOG(Id_nalog)
+);
+
+INSERT INTO KUPAC (ime_kupac, prezime_kupac, telefon_kupac) VALUES
+('Ivan', 'Ivić', '0911111111'),
+('Ana', 'Anić', '0922222222'),
+('Marko', 'Marković', '0933333333'),
+('Petra', 'Petrić', '0944444444'),
+('Luka', 'Lukić', '0955555555'),
+('Maja', 'Majić', '0966666666'),
+('Nikola', 'Nikolić', '0977777777');
+
+INSERT INTO RADNIK (ime_radnik, prezime_radnik, telefon_radnik) VALUES
+('Josip', 'Josić', '0981234567'),
+('Ivana', 'Ivandić', '0992345678'),
+('Karlo', 'Karlić', '0913456789'),
+('Martina', 'Martinić', '0924567890'),
+('Tomislav', 'Tomić', '0935678901');
+
+INSERT INTO BROJILO (serijski_broj_brojilo, tip_brojila, adresa, Id_kupac) VALUES
+('B001', 'Digitalno', 'Ulica 1, Zagreb', 1),
+('B002', 'Analogno', 'Ulica 2, Zagreb', 2),
+('B003', 'Digitalno', 'Ulica 3, Split', 3),
+('B004', 'Analogno', 'Ulica 4, Rijeka', 4),
+('B005', 'Digitalno', 'Ulica 5, Osijek', 5),
+('B006', 'Analogno', 'Ulica 6, Dubrovnik', 6),
+('B007', 'Digitalno', 'Ulica 7, Zadar', 7),
+('B008', 'Analogno', 'Ulica 8, Varaždin', 1),
+('B009', 'Digitalno', 'Ulica 9, Šibenik', 2),
+('B010', 'Analogno', 'Ulica 10, Pula', 3);
+
+INSERT INTO NALOG (datum_nalog, status_nalog, Id_radnik) VALUES
+('2024-06-15 08:00', 'Aktivan', 1),
+('2024-06-15 09:00', 'Aktivan', 2),
+('2024-06-15 10:00', 'Završen', 3),
+('2024-06-15 11:00', 'Završen', 4),
+('2024-06-15 12:00', 'Aktivan', 5),
+('2024-06-16 08:30', 'Aktivan', 1),
+('2024-06-16 09:30', 'Završen', 2),
+('2024-06-16 10:30', 'Aktivan', 3),
+('2024-06-16 11:30', 'Završen', 4),
+('2024-06-16 12:30', 'Aktivan', 5);
+
+INSERT INTO STAVKA_NALOGA (Id_nalog, Id_brojilo, adresa_brojila) VALUES
+(1, 1, 'Ulica 1, Zagreb'),
+(1, 2, 'Ulica 2, Zagreb'),
+(2, 3, 'Ulica 3, Split'),
+(2, 4, 'Ulica 4, Rijeka'),
+(3, 5, 'Ulica 5, Osijek'),
+(3, 6, 'Ulica 6, Dubrovnik'),
+(4, 7, 'Ulica 7, Zadar'),
+(4, 8, 'Ulica 8, Varaždin'),
+(5, 9, 'Ulica 9, Šibenik'),
+(5, 10, 'Ulica 10, Pula'),
+(6, 1, 'Ulica 1, Zagreb'),
+(7, 2, 'Ulica 2, Zagreb'),
+(8, 3, 'Ulica 3, Split'),
+(9, 4, 'Ulica 4, Rijeka'),
+(10, 5, 'Ulica 5, Osijek');
+
+INSERT INTO OCITANJE (datum_ocitavanja, tarifa_visoka, tarifa_niska, komentar, Id_nalog) VALUES
+('2024-06-15 08:15', 120.50, 60.30, 'Očitanje uspješno', 1),
+('2024-06-15 09:15', 110.40, 55.20, 'Očitanje uspješno', 2),
+('2024-06-15 10:15', 130.70, 65.30, 'Greška na brojilu', 3),
+('2024-06-15 11:15', 115.20, 57.10, 'Očitanje uspješno', 4),
+('2024-06-15 12:15', 125.80, 63.40, 'Očitanje uspješno', 5),
+('2024-06-16 08:45', 140.90, 70.45, 'Greška na brojilu', 6),
+('2024-06-16 09:45', 105.60, 52.80, 'Očitanje uspješno', 7),
+('2024-06-16 10:45', 150.30, 75.15, 'Očitanje uspješno', 8),
+('2024-06-16 11:45', 95.20, 47.60, 'Greška u očitanju', 9),
+('2024-06-16 12:45', 135.70, 67.85, 'Očitanje uspješno', 10);
