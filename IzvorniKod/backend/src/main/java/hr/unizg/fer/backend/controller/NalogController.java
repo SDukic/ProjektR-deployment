@@ -30,24 +30,22 @@ public class NalogController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Nalog>> getAllNalogs() {
-        List<Nalog> nalozi = nalogService.getAllNalogs();
+    public ResponseEntity<List<NalogDTO>> getAllNalogs() {
+        List<NalogDTO> nalozi = nalogService.getAllNalozi();
         return ResponseEntity.ok(nalozi);
     }
 
-
     @GetMapping("/{nalogId}")
-    public Nalog getNalozi(@PathVariable Integer nalogId){
-        return nalogService.getNalogById(nalogId);
+    public ResponseEntity<NalogDTO> getNalogById(@PathVariable Integer nalogId) {
+        NalogDTO nalogDTO = nalogService.getNalogById(nalogId);
+        return ResponseEntity.ok(nalogDTO);
     }
 
     @GetMapping("/radnik/{radnikId}")
-    public List<Nalog> getAllNaloziByRadnikId(@PathVariable Radnik radnikId){
-        return nalogService.getAllNaloziByRadnikId(radnikId);
+    public ResponseEntity<List<NalogDTO>> getAllNaloziByRadnikId(@PathVariable Radnik radnikId) {
+        List<NalogDTO> nalozi = nalogService.getAllNaloziByRadnikId(radnikId);
+        return ResponseEntity.ok(nalozi);
     }
-
-
-
 
     @PostMapping("/create")
     public Nalog createNalog(@RequestBody Nalog nalog) {
@@ -68,6 +66,4 @@ public class NalogController {
     public void addStavkaToNalog(@PathVariable Integer nalogId, @RequestBody StavkaNaloga stavkaNaloga) {
         nalogService.addStavkaToNalog(nalogId, stavkaNaloga);
     }
-
-
 }
