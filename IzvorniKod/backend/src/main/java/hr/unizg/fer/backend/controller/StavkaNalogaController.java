@@ -1,6 +1,7 @@
 package hr.unizg.fer.backend.controller;
 
 import hr.unizg.fer.backend.DTO.OcitanjeDTO;
+import hr.unizg.fer.backend.DTO.StavkaNalogaDTO;
 import hr.unizg.fer.backend.entity.Ocitanje;
 import hr.unizg.fer.backend.entity.StavkaNaloga;
 import hr.unizg.fer.backend.service.OcitanjeService;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/stavkenaloga")
@@ -50,10 +50,12 @@ public class StavkaNalogaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedOcitanjeDTO);
     }
 
-
     @GetMapping("/{stavkaId}")
-    public Optional<StavkaNaloga> getStavkaNalogabyId(@PathVariable Integer stavkaId){
-        return stavkaNalogaService.getStavkaNalogaById(stavkaId);
+    public ResponseEntity<StavkaNalogaDTO> getStavkaNalogabyId(@PathVariable Integer stavkaId) {
+        StavkaNaloga stavkaNaloga = stavkaNalogaService.getStavkaNalogaById(stavkaId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stavka naloga nije pronađena"));
+        StavkaNalogaDTO stavkaNalogaDTO = new StavkaNalogaDTO(stavkaNaloga);
+        return ResponseEntity.ok(stavkaNalogaDTO);
     }
 
     @GetMapping("/all")

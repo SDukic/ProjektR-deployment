@@ -7,11 +7,14 @@ import java.util.stream.Collectors;
 
 public class StavkaNalogaDTO {
     private Integer id;
-    private String adresaBrojila;
+    private BrojiloDTO brojilo;
     private Set<OcitanjeDTO> ocitanja;
 
     public StavkaNalogaDTO(StavkaNaloga stavkaNaloga) {
         this.id = stavkaNaloga.getId();
+
+        this.brojilo = stavkaNaloga.getIdBrojilo() != null ? new BrojiloDTO(stavkaNaloga.getIdBrojilo()) : null;
+
 
         // Map related entities to DTOs
         this.ocitanja = stavkaNaloga.getOcitanja().stream()
@@ -29,19 +32,19 @@ public class StavkaNalogaDTO {
         this.id = id;
     }
 
-    public String getAdresaBrojila() {
-        return adresaBrojila;
-    }
-
-    public void setAdresaBrojila(String adresaBrojila) {
-        this.adresaBrojila = adresaBrojila;
-    }
-
     public Set<OcitanjeDTO> getOcitanja() {
         return ocitanja;
     }
 
     public void setOcitanja(Set<OcitanjeDTO> ocitanja) {
         this.ocitanja = ocitanja;
+    }
+
+    public BrojiloDTO getBrojilo() {
+        return brojilo;
+    }
+
+    public void setBrojilo(BrojiloDTO brojilo) {
+        this.brojilo = brojilo;
     }
 }

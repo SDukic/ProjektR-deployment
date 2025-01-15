@@ -3,7 +3,6 @@ package hr.unizg.fer.backend.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -22,8 +21,7 @@ public class StavkaNaloga {
     @JsonBackReference("nalog-stavke")
     private Nalog idNalog;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_brojilo")
     @JsonBackReference("brojilo-stavke")
     private Brojilo idBrojilo;
@@ -63,5 +61,4 @@ public class StavkaNaloga {
     public void setIdNalog(Nalog idNalog) {
         this.idNalog = idNalog;
     }
-
 }
