@@ -55,18 +55,14 @@ const NalogDetails: React.FC = () => {
       <h3>Stavke Naloga</h3>
       <ul>
         {nalog.stavkeNaloga.map((stavka) => (
-          <li
-            key={stavka.id}
-            onClick={() => setSelectedStavkaId(stavka.id)}
-            className="stavka-item"
-          >
-            <strong>ID stavke:</strong> {stavka.id} <br />
-            <strong>Adresa Brojila:</strong> {stavka.adresaBrojila}
-          </li>
+          <Link to={`/StavkaNalogaDetails/${stavka.id}`} >
+                      <strong>ID stavke:</strong> {stavka.id} <br />
+          </Link>
+          
         ))}
       </ul>
 
-      <h3>Očitanja</h3>
+      <h3>Radnici zaduženi za ovaj nalog</h3>
       <table className="ocitanja-table">
         <thead>
           <tr>

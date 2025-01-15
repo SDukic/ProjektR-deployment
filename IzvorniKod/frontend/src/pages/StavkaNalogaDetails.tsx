@@ -13,7 +13,9 @@ type Ocitanje = {
 
 type Brojilo = {
   id: number;
-  naziv: string; // Dodaj atribute Brojila ako ih treba prikazati
+  serijskiBrojBrojilo: string;
+  tipBrojila: string;
+  adresa: string;// Dodaj atribute Brojila ako ih treba prikazati
 };
 
 type StavkaNaloga = {
@@ -59,7 +61,9 @@ const StavkaNalogaDetails: React.FC = () => {
 
       {stavkaNaloga.brojilo && (
         <p>
-          <strong>Brojilo:</strong> {stavkaNaloga.brojilo.naziv} (ID: {stavkaNaloga.brojilo.id})
+          <strong>Brojilo:</strong> {stavkaNaloga.brojilo.serijskiBrojBrojilo} (ID: {stavkaNaloga.brojilo.id})
+          (SerijskiBroj: {stavkaNaloga.brojilo.serijskiBrojBrojilo})
+          (adresa: {stavkaNaloga.brojilo.adresa})
         </p>
       )}
 
