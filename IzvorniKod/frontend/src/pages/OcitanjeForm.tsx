@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import "./../styles/OcitanjeForm.css";
 
 type OcitanjeFormProps = {
-  idNalog: number;
   idStavkaNaloga: number;
   onClose: () => void;
 };
 
-const OcitanjeForm: React.FC<OcitanjeFormProps> = ({ idNalog, idStavkaNaloga, onClose }) => {
+const OcitanjeForm: React.FC<OcitanjeFormProps> = ({ idStavkaNaloga, onClose }) => {
   const [datumOcitavanja, setDatumOcitavanja] = useState("");
   const [tarifaVisoka, setTarifaVisoka] = useState<number | undefined>(undefined);
   const [tarifaNiska, setTarifaNiska] = useState<number | undefined>(undefined);

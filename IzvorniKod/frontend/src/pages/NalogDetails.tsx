@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from "react";
-import OcitanjeForm from "./OcitanjeForm";
+import { useParams, Link } from "react-router-dom"; // Importiramo useParams za dohvat id-a
 import StavkaNalogaDetails from "./StavkaNalogaDetails"; // Import nove komponente
 import "./../styles/NalogDetails.css";
-
-type Ocitanje = {
-  id: number;
-  datumOcitavanja: string;
-  tarifaVisoka: number;
-  tarifaNiska: number;
-  komentar: string;
-};
 
 type StavkaNaloga = {
   id: number;
@@ -23,14 +15,11 @@ type Nalog = {
   stavkeNaloga: StavkaNaloga[];
 };
 
-type NalogDetailsProps = {
-  nalogId: number;
-  onClose: () => void;
-};
-
-const NalogDetails: React.FC<NalogDetailsProps> = ({ nalogId, onClose }) => {
+const NalogDetails: React.FC = () => {
   const [nalog, setNalog] = useState<Nalog | null>(null);
   const [selectedStavkaId, setSelectedStavkaId] = useState<number | null>(null);
+
+  const { nalogId } = useParams<{ nalogId: string }>(); // Dohvaćamo nalogId iz URL-a
 
   useEffect(() => {
     fetch(`http://localhost:8080/api/nalozi/${nalogId}`)
@@ -46,18 +35,15 @@ const NalogDetails: React.FC<NalogDetailsProps> = ({ nalogId, onClose }) => {
   if (selectedStavkaId) {
     return (
       <StavkaNalogaDetails
-        stavkaId={selectedStavkaId}
-        nalogId={nalogId}
-        onClose={() => setSelectedStavkaId(null)} // Povratak na popis naloga
       />
     );
   }
 
   return (
     <div className="nalog-details">
-      <button onClick={onClose} className="close-button">
+      <Link to="/" className="close-button">
         Povratak na Listu
-      </button>
+      </Link>
       <h2>Detalji Naloga: {nalog.id}</h2>
       <p>
         <strong>Datum Naloga:</strong> {new Date(nalog.datumNalog).toLocaleString()}
@@ -92,7 +78,7 @@ const NalogDetails: React.FC<NalogDetailsProps> = ({ nalogId, onClose }) => {
           </tr>
         </thead>
         <tbody>
-        
+          {/* Ovdje ćeš dodati redove za očitanja */}
         </tbody>
       </table>
     </div>

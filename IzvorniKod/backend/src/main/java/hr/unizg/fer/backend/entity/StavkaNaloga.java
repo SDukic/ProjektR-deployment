@@ -22,8 +22,6 @@ public class StavkaNaloga {
     @JsonBackReference("nalog-stavke")
     private Nalog idNalog;
 
-    @Column(name = "adresa_brojila", length = 100)
-    private String adresaBrojila;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_brojilo")
@@ -64,14 +62,6 @@ public class StavkaNaloga {
 
     public void setIdNalog(Nalog idNalog) {
         this.idNalog = idNalog;
-    }
-
-    public String getAdresaBrojila() {
-        return adresaBrojila;
-    }
-
-    public void setAdresaBrojila(String adresaBrojila) {
-        this.adresaBrojila = adresaBrojila;
     }
 
 }

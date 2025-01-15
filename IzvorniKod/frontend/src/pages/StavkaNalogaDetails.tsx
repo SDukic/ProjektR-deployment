@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import "./../styles/StavkaNalogaDetails.css";
+import { useParams, Link } from "react-router-dom"; // Importiramo useParams za dohvat stavkaId iz URL-a
 import OcitanjeForm from "./OcitanjeForm";
+import "./../styles/StavkaNalogaDetails.css";
 
 type Ocitanje = {
   id: number;
@@ -22,17 +23,8 @@ type StavkaNaloga = {
   ocitanja: Ocitanje[];
 };
 
-type StavkaNalogaDetailsProps = {
-  nalogId: number;
-  stavkaId: number;
-  onClose: () => void;
-};
-
-const StavkaNalogaDetails: React.FC<StavkaNalogaDetailsProps> = ({
-  nalogId,
-  stavkaId,
-  onClose,
-}) => {
+const StavkaNalogaDetails: React.FC = () => {
+  const { stavkaId } = useParams<{ stavkaId: string }>(); // Dohvaćamo stavkaId iz URL-a
   const [stavkaNaloga, setStavkaNaloga] = useState<StavkaNaloga | null>(null);
   const [showOcitanjeForm, setShowOcitanjeForm] = useState(false); // State for showing OcitanjeForm
 
@@ -57,9 +49,9 @@ const StavkaNalogaDetails: React.FC<StavkaNalogaDetailsProps> = ({
 
   return (
     <div className="stavka-naloga-details">
-      <button onClick={onClose} className="close-button">
-        Povratak na Listu
-      </button>
+      <Link to={`/NalogDetails/${stavkaNaloga.id}`} className="close-button">
+        Povratak na Nalog
+      </Link>
       <h2>Detalji Stavke Naloga: {stavkaNaloga.id}</h2>
       <p>
         <strong>Adresa Brojila:</strong> {stavkaNaloga.adresaBrojila}
@@ -79,7 +71,6 @@ const StavkaNalogaDetails: React.FC<StavkaNalogaDetailsProps> = ({
       {/* Conditionally render OcitanjeForm */}
       {showOcitanjeForm && (
         <OcitanjeForm
-          idNalog={nalogId} // Pass the necessary props to the form
           idStavkaNaloga={stavkaNaloga.id}
           onClose={handleCloseOcitanjeForm} // Close the form when done
         />

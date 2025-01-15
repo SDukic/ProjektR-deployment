@@ -12,7 +12,6 @@ public class StavkaNalogaDTO {
 
     public StavkaNalogaDTO(StavkaNaloga stavkaNaloga) {
         this.id = stavkaNaloga.getId();
-        this.adresaBrojila = stavkaNaloga.getAdresaBrojila();
 
         // Map related entities to DTOs
         this.ocitanja = stavkaNaloga.getOcitanja().stream()

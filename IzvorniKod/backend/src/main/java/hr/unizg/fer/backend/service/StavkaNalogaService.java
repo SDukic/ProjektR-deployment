@@ -30,7 +30,6 @@ public class StavkaNalogaService {
         StavkaNaloga stavkaNaloga = stavkaNalogaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("StavkaNaloga with ID " + id + " not found"));
 
-        stavkaNaloga.setAdresaBrojila(updatedStavkaNaloga.getAdresaBrojila());
         stavkaNaloga.setIdBrojilo(updatedStavkaNaloga.getIdBrojilo());
         stavkaNaloga.setIdNalog(updatedStavkaNaloga.getIdNalog());
 
