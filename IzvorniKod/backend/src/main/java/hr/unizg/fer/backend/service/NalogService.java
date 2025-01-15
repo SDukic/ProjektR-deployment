@@ -29,17 +29,22 @@ public class NalogService {
         this.stavkaNalogaRepository = stavkaNalogaRepository;
     }
 
-    public List<Nalog> getAllNalogs() {
-        return nalogRepository.findAll();
+    public List<NalogDTO> getAllNalozi() {
+        return nalogRepository.findAll().stream()
+                .map(NalogDTO::new)
+                .collect(Collectors.toList());
     }
 
-    public Nalog getNalogById(Integer id){
-        return nalogRepository.findById(id)
-                .orElseThrow((() -> new EntityNotFoundException("Nije pronađen nalog sa id: " + id)));
+    public NalogDTO getNalogById(Integer id) {
+        Nalog nalog = nalogRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nije pronađen nalog sa id: " + id));
+        return new NalogDTO(nalog);
     }
 
-    public List<Nalog> getAllNaloziByRadnikId(Radnik radnikId){
-        return nalogRepository.findByIdRadnik(radnikId);
+    public List<NalogDTO> getAllNaloziByRadnikId(Radnik radnikId) {
+        return nalogRepository.findByIdRadnik(radnikId).stream()
+                .map(NalogDTO::new)
+                .collect(Collectors.toList());
     }
 
     public Nalog createNalog(Nalog nalog){

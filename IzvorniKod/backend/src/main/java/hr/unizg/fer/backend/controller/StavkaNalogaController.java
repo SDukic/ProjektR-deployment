@@ -24,6 +24,18 @@ public class StavkaNalogaController {
         this.ocitanjeService = ocitanjeService;
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<StavkaNalogaDTO>> getAllStavkeNaloga() {
+        List<StavkaNalogaDTO> stavkeNaloga = stavkaNalogaService.allStavkeNaloga();
+        return ResponseEntity.ok(stavkeNaloga);
+    }
+
+    @GetMapping("/{stavkaId}")
+    public ResponseEntity<StavkaNalogaDTO> getStavkaNalogabyId(@PathVariable Integer stavkaId) {
+        StavkaNalogaDTO stavkaNalogaDTO = stavkaNalogaService.getStavkaNalogaDTOById(stavkaId);
+        return ResponseEntity.ok(stavkaNalogaDTO);
+    }
+
     @PostMapping("/{stavkaId}/ocitanja")
     public ResponseEntity<OcitanjeDTO> createOcitanje(
             @PathVariable Integer stavkaId,
@@ -48,19 +60,6 @@ public class StavkaNalogaController {
         OcitanjeDTO savedOcitanjeDTO = new OcitanjeDTO(savedOcitanje);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedOcitanjeDTO);
-    }
-
-    @GetMapping("/{stavkaId}")
-    public ResponseEntity<StavkaNalogaDTO> getStavkaNalogabyId(@PathVariable Integer stavkaId) {
-        StavkaNaloga stavkaNaloga = stavkaNalogaService.getStavkaNalogaById(stavkaId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stavka naloga nije pronađena"));
-        StavkaNalogaDTO stavkaNalogaDTO = new StavkaNalogaDTO(stavkaNaloga);
-        return ResponseEntity.ok(stavkaNalogaDTO);
-    }
-
-    @GetMapping("/all")
-    public List<StavkaNaloga> getAllStavkeNaloga(){
-        return stavkaNalogaService.allStavkeNaloga();
     }
 
     @PostMapping("/create")

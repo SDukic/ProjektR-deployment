@@ -1,9 +1,0 @@
-post ocitanje (nalog id, stavka id) {
-    datumvrijeme_ocitavanja
-    tarifa_visoka
-    tarifa_niska
-    komentar
-}
-
-- ocitanje ima idNalog a treba imati idStavka?
-- napraviti validaciju podataka (možda)
