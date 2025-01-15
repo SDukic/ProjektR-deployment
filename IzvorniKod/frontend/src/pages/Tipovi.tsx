@@ -1,5 +1,9 @@
 
 
+type Brojilo = {
+  
+}
+
 type Ocitanje = {
     id: number;
     datumOcitavanja: string;

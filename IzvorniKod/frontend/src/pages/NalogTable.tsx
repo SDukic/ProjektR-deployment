@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import NalogDetails from "./NalogDetails";
+import { Link } from "react-router-dom"; // Importiramo Link
 import "./../styles/NalogTable.css";
 
 type Nalog = {
@@ -10,7 +10,6 @@ type Nalog = {
 
 const NalogTable: React.FC = () => {
   const [nalozi, setNalozi] = useState<Nalog[]>([]);
-  const [selectedNalogId, setSelectedNalogId] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("http://localhost:8080/api/nalozi/all")
@@ -18,15 +17,6 @@ const NalogTable: React.FC = () => {
       .then((data) => setNalozi(data))
       .catch((error) => console.error("Error fetching nalozi:", error));
   }, []);
-
-  if (selectedNalogId !== null) {
-    return (
-      <NalogDetails
-        nalogId={selectedNalogId}
-        onClose={() => setSelectedNalogId(null)} // Povratak na listu naloga
-      />
-    );
-  }
 
   return (
     <div className="nalog-container">
@@ -47,12 +37,9 @@ const NalogTable: React.FC = () => {
               <td>{new Date(nalog.datumNalog).toLocaleString()}</td>
               <td>{nalog.statusNalog}</td>
               <td>
-                <button
-                  className="details-button"
-                  onClick={() => setSelectedNalogId(nalog.id)}
-                >
+                <Link to={`/NalogDetails/${nalog.id}`} className="details-button">
                   Prikaži Detalje
-                </button>
+                </Link>
               </td>
             </tr>
           ))}
