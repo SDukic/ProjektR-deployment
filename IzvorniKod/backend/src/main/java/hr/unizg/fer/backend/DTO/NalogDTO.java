@@ -1,6 +1,7 @@
 package hr.unizg.fer.backend.DTO;
 
 import hr.unizg.fer.backend.entity.Nalog;
+import hr.unizg.fer.backend.entity.Radnik;
 
 import java.util.Set;
 
@@ -11,7 +12,7 @@ public class NalogDTO {
     private Integer id;
     private Instant datumNalog;
     private String statusNalog;
-
+    private RadnikDTO radnik;
     private Set<StavkaNalogaDTO> stavkeNaloga;
 
     public NalogDTO(Nalog nalog) {
@@ -19,11 +20,14 @@ public class NalogDTO {
         this.datumNalog = nalog.getDatumNalog();
         this.statusNalog = nalog.getStatusNalog();
 
-        // Map related entities to DTOs
         this.stavkeNaloga = nalog.getStavkeNaloga().stream()
                 .map(StavkaNalogaDTO::new)
                 .collect(Collectors.toSet());
 
+        Radnik radnik = nalog.getIdRadnik();
+        if (radnik != null) {
+            this.radnik = new RadnikDTO(radnik);
+        }
     }
 
     // Getters and setters
@@ -61,5 +65,12 @@ public class NalogDTO {
         this.stavkeNaloga = stavkeNaloga;
     }
 
+    public RadnikDTO getRadnik() {
+        return radnik;
+    }
+
+    public void setRadnik(RadnikDTO radnik) {
+        this.radnik = radnik;
+    }
 }
 

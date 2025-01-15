@@ -128,12 +128,11 @@ POST http://localhost:8080/api/stavkenaloga/create
 Content-Type: application/json
 
 {
-  "adresaBrojila": "Adresa brojila 1",
   "idBrojilo": {
-    "id": 101
+    "id": 6
   },
   "idNalog": {
-    "id": 1
+    "id": 9
   }
 }
 

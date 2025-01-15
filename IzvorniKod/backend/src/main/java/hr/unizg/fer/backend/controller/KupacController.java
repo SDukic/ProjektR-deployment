@@ -1,5 +1,8 @@
 package hr.unizg.fer.backend.controller;
 
+import hr.unizg.fer.backend.DTO.BrojiloDTO;
+import hr.unizg.fer.backend.DTO.KupacDTO;
+import hr.unizg.fer.backend.entity.Brojilo;
 import hr.unizg.fer.backend.entity.Kupac;
 import hr.unizg.fer.backend.service.KupacService;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +20,7 @@ public class KupacController {
     }
 
     @GetMapping("/all")
-    public List<Kupac> getAllKupci(){
+    public List<KupacDTO> getAllKupci(){
         return kupacService.allKupci();
     }
 
@@ -34,5 +37,10 @@ public class KupacController {
     @DeleteMapping("/delete/{id}")
     public void deleteKupac(@PathVariable Integer id) {
         kupacService.deleteKupac(id);
+    }
+
+    @GetMapping("/{kupacId}/brojila")
+    public List<BrojiloDTO> getBrojilaByKupacId(@PathVariable Integer kupacId) {
+        return kupacService.getBrojilaByKupacId(kupacId);
     }
 }
