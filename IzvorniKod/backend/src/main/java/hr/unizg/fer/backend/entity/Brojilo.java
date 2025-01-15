@@ -33,14 +33,14 @@ public class Brojilo {
 
     @OneToMany(mappedBy = "idBrojilo", cascade = CascadeType.ALL)
     @JsonManagedReference("brojilo-stavke")
-    private Set<StavkaNaloga> stavkaNalogas = new LinkedHashSet<>();
+    private Set<StavkaNaloga> stavkaNaloga = new LinkedHashSet<>();
 
-    public Set<StavkaNaloga> getStavkaNalogas() {
-        return stavkaNalogas;
+    public Set<StavkaNaloga> getStavkaNaloga() {
+        return stavkaNaloga;
     }
 
-    public void setStavkaNalogas(Set<StavkaNaloga> stavkaNalogas) {
-        this.stavkaNalogas = stavkaNalogas;
+    public void setStavkaNaloga(Set<StavkaNaloga> stavkaNaloga) {
+        this.stavkaNaloga = stavkaNaloga;
     }
 
     public Kupac getIdKupac() {

@@ -1,8 +1,12 @@
 package hr.unizg.fer.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "stavka_naloga", schema = "public")
@@ -25,6 +29,18 @@ public class StavkaNaloga {
     @JoinColumn(name = "id_brojilo")
     @JsonBackReference("brojilo-stavke")
     private Brojilo idBrojilo;
+
+    @OneToMany(mappedBy = "idStavkaNaloga",cascade = CascadeType.ALL)
+    @JsonManagedReference("stavka-ocitanja")
+    private Set<Ocitanje> ocitanja = new LinkedHashSet<>();
+
+    public Set<Ocitanje> getOcitanja() {
+        return ocitanja;
+    }
+
+    public void setOcitanja(Set<Ocitanje> ocitanja) {
+        this.ocitanja = ocitanja;
+    }
 
     public Brojilo getIdBrojilo() {
         return idBrojilo;

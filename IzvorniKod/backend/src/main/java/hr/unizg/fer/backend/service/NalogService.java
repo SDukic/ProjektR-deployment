@@ -1,16 +1,20 @@
 package hr.unizg.fer.backend.service;
 
+import hr.unizg.fer.backend.DTO.NalogDTO;
 import hr.unizg.fer.backend.entity.Nalog;
 import hr.unizg.fer.backend.entity.Radnik;
 import hr.unizg.fer.backend.entity.StavkaNaloga;
 import hr.unizg.fer.backend.repository.NalogRepository;
 import hr.unizg.fer.backend.repository.StavkaNalogaRepository;
 import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class NalogService {
@@ -25,7 +29,7 @@ public class NalogService {
         this.stavkaNalogaRepository = stavkaNalogaRepository;
     }
 
-    public List<Nalog> allNalozi(){
+    public List<Nalog> getAllNalogs() {
         return nalogRepository.findAll();
     }
 
@@ -49,7 +53,6 @@ public class NalogService {
         nalog.setDatumNalog(updatedNalog.getDatumNalog());
         nalog.setStatusNalog(updatedNalog.getStatusNalog());
         nalog.setIdRadnik(updatedNalog.getIdRadnik());
-        nalog.setOcitanja(updatedNalog.getOcitanja());
         nalog.setStavkeNaloga(updatedNalog.getStavkeNaloga());
 
         return nalogRepository.save(nalog);
@@ -71,4 +74,5 @@ public class NalogService {
         stavkaNalogaRepository.save(stavkaNaloga);
         nalogRepository.save(nalog);
     }
+
 }

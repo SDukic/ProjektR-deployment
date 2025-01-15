@@ -28,9 +28,6 @@ public class Nalog {
     @JsonBackReference("radnik-nalozi")
     private Radnik idRadnik;
 
-    @OneToMany(mappedBy = "idNalog",cascade = CascadeType.ALL)
-    @JsonManagedReference("nalog-ocitanja")
-    private Set<Ocitanje> ocitanja = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idNalog", cascade = CascadeType.ALL)
     @JsonManagedReference("nalog-stavke")
@@ -44,13 +41,6 @@ public class Nalog {
         this.stavkeNaloga = stavkaNalogas;
     }
 
-    public Set<Ocitanje> getOcitanja() {
-        return ocitanja;
-    }
-
-    public void setOcitanja(Set<Ocitanje> ocitanjes) {
-        this.ocitanja = ocitanjes;
-    }
 
     public Radnik getIdRadnik() {
         return idRadnik;

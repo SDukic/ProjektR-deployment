@@ -1,43 +1,35 @@
-package hr.unizg.fer.backend.entity;
+package hr.unizg.fer.backend.DTO;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import hr.unizg.fer.backend.entity.Ocitanje;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
-@Entity
-@Table(name = "ocitanje", schema = "public")
-public class Ocitanje {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ocitanje_seq")
-    @SequenceGenerator(name = "ocitanje_seq", sequenceName = "ocitanje_id_ocitanje_seq", allocationSize = 1)
-    @Column(name = "id_ocitanje", nullable = false)
+public class OcitanjeDTO {
     private Integer id;
-
-    @Column(name = "datum_ocitavanja", nullable = false)
     private Instant datumOcitavanja;
-
-    @Column(name = "tarifa_visoka", precision = 10, scale = 2)
     private BigDecimal tarifaVisoka;
-
-    @Column(name = "tarifa_niska", precision = 10, scale = 2)
     private BigDecimal tarifaNiska;
-
-    @Column(name = "komentar", length = Integer.MAX_VALUE)
     private String komentar;
+    private Integer idStavkaNaloga; // ID za povezivanje sa StavkaNaloga
 
+    public OcitanjeDTO() {}
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_stavka")
-    @JsonBackReference("stavka-ocitanja")
-    private StavkaNaloga idStavkaNaloga;
+    public OcitanjeDTO(Ocitanje ocitanje) {
+        this.id = ocitanje.getId();
+        this.datumOcitavanja = ocitanje.getDatumOcitavanja();
+        this.tarifaVisoka = ocitanje.getTarifaVisoka();
+        this.tarifaNiska = ocitanje.getTarifaNiska();
+        this.komentar = ocitanje.getKomentar();
+        this.idStavkaNaloga = ocitanje.getIdStavkaNaloga() != null ? ocitanje.getIdStavkaNaloga().getId() : null;
+    }
+    // Getters and setters
 
-    public StavkaNaloga getIdStavkaNaloga() {
+    public Integer getIdStavkaNaloga() {
         return idStavkaNaloga;
     }
 
-    public void setIdStavkaNaloga(StavkaNaloga idStavkaNaloga) {
+    public void setIdStavkaNaloga(Integer idStavkaNaloga) {
         this.idStavkaNaloga = idStavkaNaloga;
     }
 
@@ -80,6 +72,5 @@ public class Ocitanje {
     public void setKomentar(String komentar) {
         this.komentar = komentar;
     }
-
-
 }
+

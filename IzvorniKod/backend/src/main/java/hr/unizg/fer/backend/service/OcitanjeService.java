@@ -34,7 +34,6 @@ public class OcitanjeService {
         ocitanje.setTarifaVisoka(updatedOcitanje.getTarifaVisoka());
         ocitanje.setTarifaNiska(updatedOcitanje.getTarifaNiska());
         ocitanje.setKomentar(updatedOcitanje.getKomentar());
-        ocitanje.setIdNalog(updatedOcitanje.getIdNalog());
 
         return ocitanjeRepository.save(ocitanje);
     }

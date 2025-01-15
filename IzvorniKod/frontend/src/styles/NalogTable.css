@@ -1,0 +1,48 @@
+.nalog-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .nalog-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+  }
+  
+  .nalog-table thead tr {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .nalog-table th, .nalog-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .nalog-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .details-button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .details-button:hover {
+    background-color: #0056b3;
+  }
+  
