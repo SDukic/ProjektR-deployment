@@ -39,6 +39,8 @@ const NalogDetails: React.FC = () => {
     );
   }
 
+  
+
   return (
     <div className="nalog-details">
       <Link to="/" className="close-button">
@@ -52,21 +54,25 @@ const NalogDetails: React.FC = () => {
         <strong>Status:</strong> {nalog.statusNalog}
       </p>
 
+      <p>
+        Dodaj Stavke Na Nalog
+      </p>
+      <button className="open-form-button">
+        <Link to={`/StavkaNalogaForm/${nalogId}`}>Dodaj Očitavanje</Link>
+      </button>
+      
+
       <h3>Stavke Naloga</h3>
       <ul>
         {nalog.stavkeNaloga.map((stavka) => (
-          <li
-            key={stavka.id}
-            onClick={() => setSelectedStavkaId(stavka.id)}
-            className="stavka-item"
-          >
-            <strong>ID stavke:</strong> {stavka.id} <br />
-            <strong>Adresa Brojila:</strong> {stavka.adresaBrojila}
-          </li>
+          <Link to={`/StavkaNalogaDetails/${stavka.id}`} >
+                      <strong>ID stavke:</strong> {stavka.id} <br />
+          </Link>
+          
         ))}
       </ul>
 
-      <h3>Očitanja</h3>
+      <h3>Radnici zaduženi za ovaj nalog</h3>
       <table className="ocitanja-table">
         <thead>
           <tr>

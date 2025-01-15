@@ -39,7 +39,7 @@ const OcitanjeForm: React.FC<OcitanjeFormProps> = ({ idStavkaNaloga, onClose }) 
         } else {
           console.error("Neuspješno kreiranje očitanja");
         }
-      })
+      }).then(window.location.reload)
       .catch((error) => console.error("Greška pri kreiranju očitanja:", error));
 };
 
