@@ -10,10 +10,8 @@ import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,6 +37,12 @@ public class NalogService {
         Nalog nalog = nalogRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nije pronađen nalog sa id: " + id));
         return new NalogDTO(nalog);
+    }
+
+    public Nalog getNalogByIdNalog(Integer id) {
+        Nalog nalog = nalogRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nije pronađen nalog sa id: " + id));
+        return nalog;
     }
 
     public List<NalogDTO> getAllNaloziByRadnikId(Radnik radnikId) {

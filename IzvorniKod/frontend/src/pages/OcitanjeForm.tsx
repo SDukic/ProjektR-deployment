@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./../styles/OcitanjeForm.css";
+import { useNavigate } from "react-router-dom";
 
 type OcitanjeFormProps = {
   idStavkaNaloga: number;
@@ -11,6 +12,7 @@ const OcitanjeForm: React.FC<OcitanjeFormProps> = ({ idStavkaNaloga, onClose }) 
   const [tarifaVisoka, setTarifaVisoka] = useState<number | undefined>(undefined);
   const [tarifaNiska, setTarifaNiska] = useState<number | undefined>(undefined);
   const [komentar, setKomentar] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,6 +38,7 @@ const OcitanjeForm: React.FC<OcitanjeFormProps> = ({ idStavkaNaloga, onClose }) 
       .then((response) => {
         if (response.ok) {
           console.log("Očitanje uspješno dodano!");
+          navigate(0);
         } else {
           console.error("Neuspješno kreiranje očitanja");
         }

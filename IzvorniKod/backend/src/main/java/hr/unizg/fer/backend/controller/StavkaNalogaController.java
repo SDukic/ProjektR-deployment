@@ -2,8 +2,12 @@ package hr.unizg.fer.backend.controller;
 
 import hr.unizg.fer.backend.DTO.OcitanjeDTO;
 import hr.unizg.fer.backend.DTO.StavkaNalogaDTO;
+import hr.unizg.fer.backend.entity.Brojilo;
+import hr.unizg.fer.backend.entity.Nalog;
 import hr.unizg.fer.backend.entity.Ocitanje;
 import hr.unizg.fer.backend.entity.StavkaNaloga;
+import hr.unizg.fer.backend.service.BrojiloService;
+import hr.unizg.fer.backend.service.NalogService;
 import hr.unizg.fer.backend.service.OcitanjeService;
 import hr.unizg.fer.backend.service.StavkaNalogaService;
 import org.springframework.http.HttpStatus;
@@ -12,16 +16,22 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/stavkenaloga")
 public class StavkaNalogaController {
     private final StavkaNalogaService stavkaNalogaService;
     private final OcitanjeService ocitanjeService;
+    private final NalogService nalogService;
+    private final BrojiloService brojiloService;
 
-    public StavkaNalogaController(StavkaNalogaService stavkaNalogaService, OcitanjeService ocitanjeService){
+    public StavkaNalogaController(StavkaNalogaService stavkaNalogaService, OcitanjeService ocitanjeService, NalogService nalogService, BrojiloService brojiloService){
         this.stavkaNalogaService = stavkaNalogaService;
         this.ocitanjeService = ocitanjeService;
+        this.nalogService = nalogService;
+        this.brojiloService = brojiloService;
     }
 
     @GetMapping("/all")
@@ -63,9 +73,22 @@ public class StavkaNalogaController {
     }
 
     @PostMapping("/create")
-    public StavkaNaloga createStavkaNaloga(@RequestBody StavkaNaloga stavkaNaloga) {
+    public StavkaNaloga createStavkaNaloga(@RequestBody Map<String, Object> payload) {
+        Integer nalogId = (Integer) payload.get("idNalog");
+        Integer brojiloId = (Integer) payload.get("idBrojilo");
+
+        Nalog nalog = nalogService.getNalogByIdNalog(nalogId);
+
+        Optional<Brojilo> brojiloOpt= brojiloService.findBrojiloById(brojiloId);
+        Brojilo brojilo = brojiloOpt.get();
+
+        StavkaNaloga stavkaNaloga = new StavkaNaloga();
+        stavkaNaloga.setIdNalog(nalog);
+        stavkaNaloga.setIdBrojilo(brojilo);
+
         return stavkaNalogaService.createStavkaNaloga(stavkaNaloga);
     }
+
 
     @PutMapping("/update/{id}")
     public StavkaNaloga updateStavkaNaloga(@PathVariable Integer id, @RequestBody StavkaNaloga stavkaNaloga) {

@@ -51,7 +51,7 @@ const StavkaNalogaDetails: React.FC = () => {
 
   return (
     <div className="stavka-naloga-details">
-      <Link to={`/NalogDetails/${stavkaNaloga.id}`} className="close-button">
+      <Link to={`/`} className="close-button">
         Povratak na Nalog
       </Link>
       <h2>Detalji Stavke Naloga: {stavkaNaloga.id}</h2>

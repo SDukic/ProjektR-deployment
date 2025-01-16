@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom"; // Importiramo useParams za dohvat id-a
-import StavkaNalogaDetails from "./StavkaNalogaDetails"; // Import nove komponente
+import { useParams, Link } from "react-router-dom";
+import StavkaNalogaDetails from "./StavkaNalogaDetails";
 import "./../styles/NalogDetails.css";
 
 type StavkaNaloga = {
@@ -15,12 +15,20 @@ type Nalog = {
   stavkeNaloga: StavkaNaloga[];
 };
 
+type Radnik = {
+  id: number;
+  imeRadnik: String;
+  prezimeRadnik: String;
+  telefonRadnik: String;
+};
+
 const NalogDetails: React.FC = () => {
   const [nalog, setNalog] = useState<Nalog | null>(null);
+  const [radnik, setRadnik] = useState<Radnik | null>(null);
   const [selectedStavkaId, setSelectedStavkaId] = useState<number | null>(null);
+  const { nalogId } = useParams<{ nalogId: string }>();
 
-  const { nalogId } = useParams<{ nalogId: string }>(); // Dohvaćamo nalogId iz URL-a
-
+  // Fetch nalog data
   useEffect(() => {
     fetch(`http://localhost:8080/api/nalozi/${nalogId}`)
       .then((response) => response.json())
@@ -28,18 +36,22 @@ const NalogDetails: React.FC = () => {
       .catch((error) => console.error("Error fetching nalog details:", error));
   }, [nalogId]);
 
+  // Fetch radnik data
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/nalozi/radnik/nalog/${nalogId}`)
+      .then((response) => response.json())
+      .then((data) => setRadnik(data))
+      .catch((error) => console.error("Error fetching radnik details:", error));
+  }, [nalogId]);
+
+  // Conditional rendering logic
   if (!nalog) {
     return <div>Učitavanje...</div>;
   }
 
   if (selectedStavkaId) {
-    return (
-      <StavkaNalogaDetails
-      />
-    );
+    return <StavkaNalogaDetails />;
   }
-
-  
 
   return (
     <div className="nalog-details">
@@ -54,39 +66,31 @@ const NalogDetails: React.FC = () => {
         <strong>Status:</strong> {nalog.statusNalog}
       </p>
 
-      <p>
-        Dodaj Stavke Na Nalog
-      </p>
+      <p>Dodaj Stavke Na Nalog</p>
       <button className="open-form-button">
-        <Link to={`/StavkaNalogaForm/${nalogId}`}>Dodaj Očitavanje</Link>
+        <Link to={`/StavkaNalogaForm/${nalogId}`}>Dodaj stavku</Link>
       </button>
-      
 
       <h3>Stavke Naloga</h3>
       <ul>
         {nalog.stavkeNaloga.map((stavka) => (
-          <Link to={`/StavkaNalogaDetails/${stavka.id}`} >
-                      <strong>ID stavke:</strong> {stavka.id} <br />
+          <Link to={`/StavkaNalogaDetails/${stavka.id}`} key={stavka.id}>
+            <strong>ID stavke:</strong> {stavka.id} <br />
           </Link>
-          
         ))}
       </ul>
 
-      <h3>Radnici zaduženi za ovaj nalog</h3>
-      <table className="ocitanja-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Datum Očitavanja</th>
-            <th>Tarifa Visoka</th>
-            <th>Tarifa Niska</th>
-            <th>Komentar</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/* Ovdje ćeš dodati redove za očitanja */}
-        </tbody>
-      </table>
+      <h3>Radnik zaduženi za ovaj nalog</h3>
+      <p>
+        <strong>Ime radnika:
+          </strong> {radnik?.imeRadnik}
+        <strong> Prezime radnika:
+          </strong> {radnik?.prezimeRadnik}
+        <strong> Telefon radnika:
+          </strong> {radnik?.telefonRadnik}
+        <strong> Id radnika:
+          </strong> {radnik?.id}
+      </p>
     </div>
   );
 };

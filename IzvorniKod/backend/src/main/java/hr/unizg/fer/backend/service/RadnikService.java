@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RadnikService {
@@ -45,5 +46,9 @@ public class RadnikService {
         Radnik radnik = radnikRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nije pronađen radnik sa id: " + id));
         radnikRepository.delete(radnik);
+    }
+
+    public Optional<Radnik> findRadnikById(Integer idradnik) {
+        return radnikRepository.findById(idradnik);
     }
 }
