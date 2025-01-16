@@ -57,10 +57,10 @@ public class NalogController {
         return nalogService.updateNalog(id, nalog);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void deleteNalog(@PathVariable Integer id) {
-        nalogService.deleteNalog(id);
-    }
+        @DeleteMapping("/delete/{id}")
+        public void deleteNalog(@PathVariable Integer id) {
+            nalogService.deleteNalog(id);
+        }
 
     @PostMapping("/{nalogId}/addstavka")
     public void addStavkaToNalog(@PathVariable Integer nalogId, @RequestBody StavkaNaloga stavkaNaloga) {
