@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import StavkaNalogaDetails from "./StavkaNalogaDetails";
+import axios from "axios";
 import "./../styles/NalogDetails.css";
+
 
 type StavkaNaloga = {
   id: number;
@@ -13,38 +15,62 @@ type Nalog = {
   datumNalog: string;
   statusNalog: string;
   stavkeNaloga: StavkaNaloga[];
+  radnik: Radnik | null;
 };
 
 type Radnik = {
   id: number;
-  imeRadnik: String;
-  prezimeRadnik: String;
-  telefonRadnik: String;
+  imeRadnik: string;
+  prezimeRadnik: string;
+  telefonRadnik: string;
 };
 
 const NalogDetails: React.FC = () => {
   const [nalog, setNalog] = useState<Nalog | null>(null);
-  const [radnik, setRadnik] = useState<Radnik | null>(null);
+  const [radnici, setRadnici] = useState<Radnik[]>([]);
+  const [selectedRadnikId, setSelectedRadnikId] = useState<number | null>(null);
   const [selectedStavkaId, setSelectedStavkaId] = useState<number | null>(null);
   const { nalogId } = useParams<{ nalogId: string }>();
+  const navigate = useNavigate();
 
   // Fetch nalog data
   useEffect(() => {
-    fetch(`http://localhost:8080/api/nalozi/${nalogId}`)
-      .then((response) => response.json())
-      .then((data) => setNalog(data))
+    axios
+      .get(`http://localhost:8080/api/nalozi/${nalogId}`)
+      .then((response) => setNalog(response.data))
       .catch((error) => console.error("Error fetching nalog details:", error));
   }, [nalogId]);
+  console.log(nalog);
+  console.log(nalog?.radnik);
 
-  // Fetch radnik data
+  // Fetch radnici data
   useEffect(() => {
-    fetch(`http://localhost:8080/api/nalozi/radnik/nalog/${nalogId}`)
-      .then((response) => response.json())
-      .then((data) => setRadnik(data))
-      .catch((error) => console.error("Error fetching radnik details:", error));
-  }, [nalogId]);
+    axios
+      .get("http://localhost:8080/api/radnici/all")
+      .then((response) => setRadnici(response.data))
+      .catch((error) => console.error("Error fetching radnici:", error));
+  }, []);
 
-  // Conditional rendering logic
+  // Handle Radnik selection and Nalog update
+  const handleRadnikSubmit = async () => {
+    if (!selectedRadnikId || !nalogId) {
+      alert("Odaberite radnika i provjerite podatke naloga.");
+      return;
+    }
+  
+    try {
+      await axios.put(
+        `http://localhost:8080/api/nalozi/${nalogId}/dodjeliRadnika/${selectedRadnikId}`
+      );
+      console.log(selectedRadnikId);
+      alert("Radnik je uspješno dodijeljen!");
+      navigate(0);
+    } catch (error) {
+      console.error("Error updating nalog:", error);
+      alert("Došlo je do greške prilikom dodavanja radnika.");
+    }
+  };
+
   if (!nalog) {
     return <div>Učitavanje...</div>;
   }
@@ -80,17 +106,59 @@ const NalogDetails: React.FC = () => {
         ))}
       </ul>
 
-      <h3>Radnik zaduženi za ovaj nalog</h3>
-      <p>
-        <strong>Ime radnika:
-          </strong> {radnik?.imeRadnik}
-        <strong> Prezime radnika:
-          </strong> {radnik?.prezimeRadnik}
-        <strong> Telefon radnika:
-          </strong> {radnik?.telefonRadnik}
-        <strong> Id radnika:
-          </strong> {radnik?.id}
-      </p>
+      <h3>Radnik Zaduženi za Ovaj Nalog</h3>
+      {nalog.radnik ? (
+        <div>
+        <p>
+          <strong>Ime radnika:</strong> {nalog.radnik.imeRadnik} <br />
+          <strong>Prezime radnika:</strong> {nalog.radnik.prezimeRadnik} <br />
+          <strong>Telefon radnika:</strong> {nalog.radnik.telefonRadnik} <br />
+          <strong>ID radnika:</strong> {nalog.radnik.id}
+        </p>
+        <h3>Promjenite radnika</h3>
+        <ul>
+          {radnici.map((radnik) => (
+            <li key={radnik.id}>
+              <label>
+                <input
+                  type="radio"
+                  name="radnik"
+                  value={radnik.id}
+                  onChange={() => setSelectedRadnikId(radnik.id)}
+                />
+                {`${radnik.imeRadnik} ${radnik.prezimeRadnik}, Telefon: ${radnik.telefonRadnik}`}
+              </label>
+            </li>
+          ))}
+        </ul>
+        <button onClick={handleRadnikSubmit} disabled={!selectedRadnikId}>
+          Dodijeli Radnika
+        </button>
+        </div>
+      ) : (
+        <div>
+          <p>Trenutno nema dodijeljenog radnika za ovaj nalog.</p>
+          <h3>Dodajte radnika</h3>
+          <ul>
+            {radnici.map((radnik) => (
+              <li key={radnik.id}>
+                <label>
+                  <input
+                    type="radio"
+                    name="radnik"
+                    value={radnik.id}
+                    onChange={() => setSelectedRadnikId(radnik.id)}
+                  />
+                  {`${radnik.imeRadnik} ${radnik.prezimeRadnik}, Telefon: ${radnik.telefonRadnik}`}
+                </label>
+              </li>
+            ))}
+          </ul>
+          <button onClick={handleRadnikSubmit} disabled={!selectedRadnikId}>
+            Dodijeli Radnika
+          </button>
+        </div>
+      )}
     </div>
   );
 };

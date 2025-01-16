@@ -7,6 +7,7 @@ import hr.unizg.fer.backend.service.NalogService;
 import hr.unizg.fer.backend.service.OcitanjeService;
 import hr.unizg.fer.backend.service.RadnikService;
 import hr.unizg.fer.backend.service.StavkaNalogaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,6 +61,23 @@ public class NalogController {
     public Nalog updateNalog(@PathVariable Integer id, @RequestBody Nalog nalog) {
         return nalogService.updateNalog(id, nalog);
     }
+
+    @PutMapping("{idNalog}/dodjeliRadnika/{idRadnik}")
+    public ResponseEntity<Nalog> updateNalogRadnik(
+            @PathVariable Integer idNalog,
+            @PathVariable Integer idRadnik) {
+        try {
+            Nalog nalog = nalogService.getNalogByIdNalog(idNalog);
+            Radnik radnik = radnikService.findRadnikById(idRadnik)
+                    .orElseThrow(() -> new RuntimeException("Radnik nije pronađen"));
+            nalog.setIdRadnik(radnik);
+            Nalog updatedNalog = nalogService.saveNalog(nalog); // Pretpostavlja se da postoji `saveNalog` metoda u servisu
+            return ResponseEntity.ok(updatedNalog);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
     @DeleteMapping("/delete/{id}")
     public void deleteNalog(@PathVariable Integer id) {

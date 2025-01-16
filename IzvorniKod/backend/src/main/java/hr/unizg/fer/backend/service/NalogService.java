@@ -84,4 +84,8 @@ public class NalogService {
         nalogRepository.save(nalog);
     }
 
+    public Nalog saveNalog(Nalog nalog) {
+        nalogRepository.save(nalog);
+        return nalog;
+    }
 }
