@@ -88,4 +88,12 @@ public class NalogService {
         nalogRepository.save(nalog);
         return nalog;
     }
+
+    public Nalog updateNalogStatus(Integer id, String status) {
+        Nalog nalog = nalogRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nalog with ID " + id + " not found"));
+
+        nalog.setStatusNalog(status);
+        return nalogRepository.save(nalog);
+    }
 }

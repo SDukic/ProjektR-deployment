@@ -7,6 +7,7 @@ import hr.unizg.fer.backend.service.NalogService;
 import hr.unizg.fer.backend.service.OcitanjeService;
 import hr.unizg.fer.backend.service.RadnikService;
 import hr.unizg.fer.backend.service.StavkaNalogaService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -87,5 +88,11 @@ public class NalogController {
     @PostMapping("/{nalogId}/addstavka")
     public void addStavkaToNalog(@PathVariable Integer nalogId, @RequestBody StavkaNaloga stavkaNaloga) {
         nalogService.addStavkaToNalog(nalogId, stavkaNaloga);
+    }
+
+    @PutMapping("/update/{id}/status")
+    public ResponseEntity<Nalog> updateNalogStatus(@PathVariable Integer id, @RequestBody String status) {
+        Nalog updatedNalog = nalogService.updateNalogStatus(id, status);
+        return ResponseEntity.ok(updatedNalog);
     }
 }
