@@ -1,0 +1,37 @@
+Na temelju informacija iz projekta, evo funkcionalnih i nefunkcionalnih zahtjeva za projekt mobilne aplikacije za očitavanje stanja električnih brojila.
+
+### Funkcionalni zahtjevi
+
+1. **Autentifikacija radnika**: Radnik se mora prijaviti u aplikaciju kako bi pristupio nalozima za očitavanje brojila.
+2. **Preuzimanje naloga za očitavanje**:
+   - Aplikacija omogućava radniku preuzimanje naloga za očitavanje putem REST servisa sa središnjeg poslužitelja.
+   - Preuzeti nalozi se pohranjuju u lokalnu SQLite bazu na mobilnom uređaju.
+3. **Unos očitanja brojila**:
+   - Radnik unosi očitano stanje brojila i može dodati komentare.
+   - Aplikacija uspoređuje očitano stanje s očekivanim radi provjere točnosti.
+4. **Pohrana podataka**:
+   - Svi podaci o očitanju, uključujući stanje brojila i komentare, pohranjuju se u lokalnu SQLite bazu podataka.
+5. **Slanje očitanih podataka na poslužitelj**:
+   - Nakon unosa, radnik šalje podatke na središnji poslužitelj putem REST servisa.
+6. **Upravljanje lokalnim podacima**:
+   - Radnik može obrisati obavljene naloge iz mobilne baze podataka po potrebi.
+7. **CRUD operacije na podacima u web-aplikaciji** (ako se koristi):
+   - Web-aplikacija omogućava pregled i manipulaciju osnovnim podacima (kupci, brojila, radnici, nalozi za očitanje).
+
+### Nefunkcionalni zahtjevi
+
+1. **Performanse**:
+   - Aplikacija mora omogućiti brzo preuzimanje i slanje podataka između mobilnog uređaja i poslužitelja.
+   - SQLite baza podataka mora biti optimizirana za brzi unos i dohvat očitanja.
+2. **Sigurnost**:
+   - Autentifikacija radnika mora biti sigurna, uz enkripciju osjetljivih podataka pri prijenosu (npr., korištenje HTTPS protokola).
+3. **Pouzdanost**:
+   - Sustav mora omogućiti rad offline (npr., ako radnik nema pristup internetu, nalozi se spremaju lokalno).
+4. **Upotrebljivost**:
+   - Korisničko sučelje treba biti jednostavno za korištenje, posebno prilagođeno za rad na terenu.
+5. **Kompatibilnost**:
+   - Mobilna aplikacija treba raditi na Android uređajima; poslužitelj koristi PostgreSQL i Spring Boot za kompatibilnost s REST servisima.
+6. **Održavanje i proširivost**:
+   - Kod treba biti strukturiran i dokumentiran kako bi omogućio proširenje funkcionalnosti.
+7. **Sigurnost podataka**:
+   - Podaci moraju biti sigurni tijekom prijenosa i pohrane, uz implementaciju osnovnih integritetskih ograničenja (primarni i strani ključevi, NOT NULL) u bazi podataka.

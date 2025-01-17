@@ -20,6 +20,11 @@ public class StavkaNalogaService {
         this.stavkaNalogaRepository = stavkaNalogaRepository;
     }
 
+    public StavkaNaloga save(StavkaNaloga stavka) {
+        StavkaNaloga save = this.stavkaNalogaRepository.save(stavka);
+        return save;
+    }
+
     public List<StavkaNalogaDTO> allStavkeNaloga() {
         return stavkaNalogaRepository.findAll().stream()
                 .map(StavkaNalogaDTO::new)
@@ -54,5 +59,9 @@ public class StavkaNalogaService {
         StavkaNaloga stavkaNaloga = stavkaNalogaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nije pronađena stavka naloga sa id: " + id));
         stavkaNalogaRepository.delete(stavkaNaloga);
+    }
+
+    public Optional<StavkaNaloga> findById(Integer id) {
+        return stavkaNalogaRepository.findById(id);
     }
 }

@@ -51,6 +51,45 @@ const NalogDetails: React.FC = () => {
       .catch((error) => console.error("Error fetching radnici:", error));
   }, []);
 
+  const handleStatusChange = async (id: number) => {
+    try {
+      // Dohvati trenutni nalog
+      const response = await fetch(`http://localhost:8080/api/nalozi/${id}`);
+      const nalogpr = await response.json();
+
+
+      let updatedStatus = "null";
+      console.log(nalogpr.statusNalog);
+
+      if (nalogpr.statusNalog === "Aktivan") {
+        updatedStatus = "Završen"
+      } else {
+        updatedStatus = "Aktivan"
+      }
+
+      console.log(updatedStatus);
+
+      // Ažuriraj nalog
+      const updatedNalog = { ...nalogpr, statusNalog: updatedStatus };
+
+      await fetch(`http://localhost:8080/api/nalozi/update/${id}/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: updatedStatus,
+      });
+
+
+
+      alert(`Status naloga ${id} uspješno promijenjen na "${updatedStatus}".`);
+      navigate(0);
+    } catch (error) {
+      console.error("Error updating nalog:", error);
+      alert("Došlo je do pogreške prilikom ažuriranja naloga.");
+    }
+  };
+
   // Handle Radnik selection and Nalog update
   const handleRadnikSubmit = async () => {
     if (!selectedRadnikId || !nalogId) {
@@ -95,6 +134,11 @@ const NalogDetails: React.FC = () => {
       <p>Dodaj Stavke Na Nalog</p>
       <button className="open-form-button">
         <Link to={`/StavkaNalogaForm/${nalogId}`}>Dodaj stavku</Link>
+      </button>
+
+      <p>PROMJENI STATUS NALOGA</p>
+      <button className="open-form-button" onClick={() => handleStatusChange(nalog.id)}>
+        PROMJENI STATUS
       </button>
 
       <h3>Stavke Naloga</h3>

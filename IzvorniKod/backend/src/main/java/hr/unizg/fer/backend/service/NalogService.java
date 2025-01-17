@@ -100,4 +100,18 @@ public class NalogService {
         nalog.setStatusNalog(status);
         return nalogRepository.save(nalog);
     }
+
+
+
+    public Optional<Nalog> findNalogById(Integer id) {
+        return nalogRepository.findById(id);
+    }
+
+    public void save(Nalog nalog) {
+        nalogRepository.save(nalog);
+    }
+
+    public Optional<Nalog> findById(Integer idNalog) {
+        return nalogRepository.findById(idNalog);
+    }
 }

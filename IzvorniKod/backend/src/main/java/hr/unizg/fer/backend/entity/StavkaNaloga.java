@@ -30,6 +30,10 @@ public class StavkaNaloga {
     @JsonManagedReference("stavka-ocitanja")
     private Set<Ocitanje> ocitanja = new LinkedHashSet<>();
 
+    public StavkaNaloga() {
+        super();
+    }
+
     public Set<Ocitanje> getOcitanja() {
         return ocitanja;
     }

@@ -7,12 +7,15 @@ public class BrojiloDTO {
     private String serijskiBrojBrojilo;
     private String tipBrojila;
     private String adresa;
+    private Integer kupacId;
 
     public BrojiloDTO(Brojilo brojilo) {
         this.id = brojilo.getId();
         this.serijskiBrojBrojilo = brojilo.getSerijskiBrojBrojilo();
         this.tipBrojila = brojilo.getTipBrojila();
         this.adresa = brojilo.getAdresa();
+        // Ispravka: koristimo ispravan getter za idKupac
+        this.kupacId = brojilo.getIdKupac() != null ? brojilo.getIdKupac().getId() : null;
     }
 
     // Getteri i setteri
@@ -46,5 +49,13 @@ public class BrojiloDTO {
 
     public void setAdresa(String adresa) {
         this.adresa = adresa;
+    }
+
+    public Integer getKupacId() {
+        return kupacId;
+    }
+
+    public void setKupacId(Integer kupacId) {
+        this.kupacId = kupacId;
     }
 }

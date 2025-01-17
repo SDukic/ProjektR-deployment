@@ -1,5 +1,6 @@
 package hr.unizg.fer.backend.DTO;
 
+import hr.unizg.fer.backend.entity.Nalog;
 import hr.unizg.fer.backend.entity.StavkaNaloga;
 
 import java.util.Set;
@@ -9,9 +10,11 @@ public class StavkaNalogaDTO {
     private Integer id;
     private BrojiloDTO brojilo;
     private Set<OcitanjeDTO> ocitanja;
+    private Nalog nalogId;
 
     public StavkaNalogaDTO(StavkaNaloga stavkaNaloga) {
         this.id = stavkaNaloga.getId();
+        this.nalogId = stavkaNaloga.getIdNalog();
 
         this.brojilo = stavkaNaloga.getIdBrojilo() != null ? new BrojiloDTO(stavkaNaloga.getIdBrojilo()) : null;
 
@@ -46,5 +49,9 @@ public class StavkaNalogaDTO {
 
     public void setBrojilo(BrojiloDTO brojilo) {
         this.brojilo = brojilo;
+    }
+
+    public Integer getIdNalog() {
+        return nalogId.getId();
     }
 }
