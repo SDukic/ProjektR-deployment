@@ -25,8 +25,7 @@ public class Radnik {
     @Column(name = "telefon_radnik", length = 20)
     private String telefonRadnik;
 
-    // cascade = CascadeType.ALL ?
-    @OneToMany(mappedBy = "idRadnik")
+    @OneToMany(mappedBy = "idRadnik", cascade = CascadeType.PERSIST)
     @JsonManagedReference("radnik-nalozi")
     private Set<Nalog> nalogs = new LinkedHashSet<>();
 
@@ -70,4 +69,10 @@ public class Radnik {
         this.telefonRadnik = telefonRadnik;
     }
 
+    @PreRemove
+    private void preRemove() {
+        for (Nalog nalog : nalogs) {
+            nalog.setIdRadnik(null);
+        }
+    }
 }
