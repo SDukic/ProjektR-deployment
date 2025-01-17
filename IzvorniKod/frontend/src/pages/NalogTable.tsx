@@ -12,6 +12,7 @@ type Nalog = {
 const NalogTable: React.FC = () => {
   const [nalozi, setNalozi] = useState<Nalog[]>([]);
   const navigate = useNavigate();
+  const [radnikId, setRadnikId] = useState<number | "">(""); // Input for Radnik ID
 
   // Dohvaćanje svih naloga
   useEffect(() => {
@@ -20,6 +21,31 @@ const NalogTable: React.FC = () => {
       .then((data) => setNalozi(data))
       .catch((error) => console.error("Error fetching nalozi:", error));
   }, []);
+
+  const handleFilterByRadnik = () => {
+    if (radnikId === "") {
+      // If input is empty, show all nalozi
+      fetch("http://localhost:8080/api/nalozi/all")
+        .then((response) => response.json())
+        .then((data) => setNalozi(data))
+        .catch((error) => console.error("Error fetching all nalozi:", error));
+      return;
+    }
+  
+    fetch(`http://localhost:8080/api/nalozi/radnik/${radnikId}`)
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error(`Radnik with ID ${radnikId} does not exist.`);
+          } else {
+            throw new Error("An error occurred while fetching data.");
+          }
+        }
+        return response.json();
+      })
+      .then((data) => setNalozi(data))
+      .catch((error) => alert(error.message));
+  };
 
   // Funkcija za ažuriranje statusa naloga
   const handleStatusChange = async (id: number) => {
@@ -103,6 +129,18 @@ const NalogTable: React.FC = () => {
   return (
     <div className="nalog-container">
       <h1 className="title">Popis Naloga</h1>
+      <div className="filter-section">
+        <input
+          type="number"
+          value={radnikId}
+          onChange={(e) => setRadnikId(e.target.value !== "" ? parseInt(e.target.value, 10) : "")}
+          placeholder="Unesite ID radnika"
+          className="radnik-id-input"
+        />
+        <button onClick={handleFilterByRadnik} className="filter-button">
+          Prikaži Nalog za Radnika
+        </button>
+      </div>
       <button onClick={handleCreateNalog} className="create-nalog-button">
         Kreiraj Novi Nalog
       </button>
