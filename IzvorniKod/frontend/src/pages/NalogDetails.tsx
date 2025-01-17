@@ -64,12 +64,12 @@ const NalogDetails: React.FC = () => {
       // Ažuriraj nalog
       const updatedNalog = { ...nalogpr, statusNalog: updatedStatus };
 
-      await fetch(`http://localhost:8080/api/nalozi/update/${id}`, {
+      await fetch(`http://localhost:8080/api/nalozi/update/${id}/status`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedNalog),
+        body: JSON.stringify(updatedStatus),
       });
 
 
