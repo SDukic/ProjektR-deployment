@@ -26,17 +26,14 @@ const App: React.FC = () => {
           <Route path="/kupci" element={<KupacTable />} />
           <Route path="/radnici" element={<RadnikTable />} />
           <Route path="/RadnikSelectorForm/:nalogId" element={<RadnikSelectorForm />} />
+          <Route path="/" element={<NalogTable />} />
+          <Route path="/NalogDetails/:nalogId" element={<NalogDetails />} />
+          <Route path="/StavkaNalogaDetails/:stavkaId" element={<StavkaNalogaDetails />} />
+          <Route path="/StavkaNalogaForm/:nalogId" element={<StavkaNalogaForm />} />
+          <Route path="/BrojiloTable" element={<BrojiloTable />} /> {/* Nova ruta */}
         </Routes>
       </div>
-      <Routes>
-        <Route path="/" element={<NalogTable />} />
-        <Route path="/NalogDetails/:nalogId" element={<NalogDetails />} />
-        <Route path="/StavkaNalogaDetails/:stavkaId" element={<StavkaNalogaDetails />} />
-        <Route path="/StavkaNalogaForm/:nalogId" element={<StavkaNalogaForm />} />
-        
-        <Route path="/BrojiloTable" element={<BrojiloTable />} /> {/* Nova ruta */}
-      </Routes>
-    </Router>
+      </Router>
   );
 };
 

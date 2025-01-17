@@ -17,6 +17,9 @@ const NavigationHeader: React.FC = () => {
           <li>
             <Link to="/radnici">Radnici</Link>
           </li>
+          <li>
+            <Link to="/BrojiloTable">Brojila</Link>
+          </li>
           
         </ul>
       </nav>
