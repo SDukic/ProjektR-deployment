@@ -90,26 +90,15 @@ public class NalogService {
         return nalog;
     }
 
-    public Nalog changeStatus(Integer nalogId) {
-        // Pronađi nalog prema ID-ju
-        Nalog nalog = nalogRepository.findById(nalogId)
-                .orElseThrow(() -> new IllegalArgumentException("Nalog s ID-jem " + nalogId + " ne postoji"));
+    public Nalog updateNalogStatus(Integer id, String status) {
+        Nalog nalog = nalogRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nalog with ID " + id + " not found"));
 
-        // Promijeni status
-        String currentStatus = nalog.getStatusNalog();
-        String newStatus;
-
-        if ("Aktivan".equalsIgnoreCase(currentStatus)) {
-            newStatus = "Završen";
-        } else {
-            newStatus = "Aktivan";
-        }
-
-        nalog.setStatusNalog(newStatus);
-
-        // Spremi ažurirani nalog u bazu
+        nalog.setStatusNalog(status);
         return nalogRepository.save(nalog);
     }
+
+
 
     public Optional<Nalog> findNalogById(Integer id) {
         return nalogRepository.findById(id);

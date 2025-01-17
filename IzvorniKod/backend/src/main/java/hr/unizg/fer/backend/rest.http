@@ -138,3 +138,9 @@ Content-Type: application/json
 
 ### stavkenaloga/delete/{id}
 POST http://localhost:8080/api/stavkenaloga/delete/11
+
+### nalozi/update/{id}/status
+PUT http://localhost:8080/api/nalozi/update/11/status
+Content-Type: text/plain
+
+Neki status
