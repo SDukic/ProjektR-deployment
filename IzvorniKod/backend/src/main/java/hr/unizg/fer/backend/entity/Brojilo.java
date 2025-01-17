@@ -26,7 +26,7 @@ public class Brojilo {
     @Column(name = "adresa", length = 100)
     private String adresa;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_kupac")
     @JsonBackReference("kupac-brojila")
     private Kupac idKupac;

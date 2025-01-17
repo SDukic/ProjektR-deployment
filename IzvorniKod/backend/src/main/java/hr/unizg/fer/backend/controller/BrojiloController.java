@@ -22,8 +22,8 @@ public class BrojiloController {
     }
 
     @PostMapping("/create")
-    public BrojiloDTO createBrojilo(@RequestBody Brojilo brojilo) {
-        return brojiloService.createBrojilo(brojilo);
+    public BrojiloDTO createBrojilo(@RequestBody BrojiloDTO brojiloDTO) {
+        return brojiloService.createBrojilo(brojiloDTO);
     }
 
     @PutMapping("/update/{id}")

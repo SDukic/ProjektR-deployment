@@ -5,6 +5,7 @@ import hr.unizg.fer.backend.entity.Brojilo;
 import hr.unizg.fer.backend.entity.Kupac;
 import hr.unizg.fer.backend.entity.Nalog;
 import hr.unizg.fer.backend.repository.BrojiloRepository;
+import hr.unizg.fer.backend.repository.KupacRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ import java.util.Optional;
 public class BrojiloService {
     @Autowired
     private final BrojiloRepository brojiloRepository;
+    @Autowired
+    private KupacRepository kupacRepository;
 
     public BrojiloService(BrojiloRepository brojiloRepository) {
         this.brojiloRepository = brojiloRepository;
@@ -31,7 +34,8 @@ public class BrojiloService {
     }
 
     // Kreiranje brojila i vraćanje DTO-a
-    public BrojiloDTO createBrojilo(Brojilo brojilo) {
+    public BrojiloDTO createBrojilo(BrojiloDTO brojiloDTO) {
+        Brojilo brojilo = convertToEntity(brojiloDTO);
         Brojilo savedBrojilo = brojiloRepository.save(brojilo);
         return convertToDTO(savedBrojilo);
     }
@@ -60,6 +64,21 @@ public class BrojiloService {
     // Privatna metoda za konverziju u DTO
     private BrojiloDTO convertToDTO(Brojilo brojilo) {
         return new BrojiloDTO(brojilo);
+    }
+
+    private Brojilo convertToEntity(BrojiloDTO brojiloDTO) {
+        Brojilo brojilo = new Brojilo();
+        brojilo.setId(brojiloDTO.getId());
+        brojilo.setSerijskiBrojBrojilo(brojiloDTO.getSerijskiBrojBrojilo());
+        brojilo.setTipBrojila(brojiloDTO.getTipBrojila());
+        brojilo.setAdresa(brojiloDTO.getAdresa());
+
+        if (brojiloDTO.getKupacId() != null) {
+            Kupac kupac = kupacRepository.findById(brojiloDTO.getKupacId())
+                    .orElseThrow(() -> new RuntimeException("Nema tog kupca"));
+            brojilo.setIdKupac(kupac);
+        }
+        return brojilo;
     }
 
     public Optional<Brojilo> findBrojiloById(Integer brojiloId) {

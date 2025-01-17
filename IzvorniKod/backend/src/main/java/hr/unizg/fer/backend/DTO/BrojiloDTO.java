@@ -9,6 +9,9 @@ public class BrojiloDTO {
     private String adresa;
     private Integer kupacId;
 
+    // Prazan konstruktor
+    public BrojiloDTO() {}
+
     public BrojiloDTO(Brojilo brojilo) {
         this.id = brojilo.getId();
         this.serijskiBrojBrojilo = brojilo.getSerijskiBrojBrojilo();
