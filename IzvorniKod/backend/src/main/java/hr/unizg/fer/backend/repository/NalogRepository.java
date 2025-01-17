@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface NalogRepository extends JpaRepository<Nalog, Integer> {
     List<Nalog> findByIdRadnik(Radnik idRadnik);
+
+    Integer id(Integer id);
 }

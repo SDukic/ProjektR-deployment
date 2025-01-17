@@ -2,6 +2,7 @@ package hr.unizg.fer.backend.controller;
 
 import hr.unizg.fer.backend.DTO.NalogDTO;
 import hr.unizg.fer.backend.DTO.RadnikDTO;
+import hr.unizg.fer.backend.DTO.StavkaNalogaDTO;
 import hr.unizg.fer.backend.entity.*;
 import hr.unizg.fer.backend.service.NalogService;
 import hr.unizg.fer.backend.service.OcitanjeService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/nalozi")
@@ -21,7 +23,7 @@ public class NalogController {
     private final StavkaNalogaService stavkaNalogaService;
     private final OcitanjeService ocitanjeService;
 
-    public NalogController(NalogService nalogService, RadnikService radnikService, StavkaNalogaService stavkaNalogaService, OcitanjeService ocitanjeService){
+    public NalogController(NalogService nalogService, RadnikService radnikService, StavkaNalogaService stavkaNalogaService, OcitanjeService ocitanjeService) {
         this.nalogService = nalogService;
         this.radnikService = radnikService;
         this.stavkaNalogaService = stavkaNalogaService;
@@ -88,4 +90,7 @@ public class NalogController {
     public void addStavkaToNalog(@PathVariable Integer nalogId, @RequestBody StavkaNaloga stavkaNaloga) {
         nalogService.addStavkaToNalog(nalogId, stavkaNaloga);
     }
+
 }
+
+

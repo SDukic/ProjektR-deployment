@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"; // Importiramo Link
 import "./../styles/NalogTable.css";
+import { useNavigate } from "react-router-dom";
 
 type Nalog = {
   id: number;
@@ -10,6 +11,7 @@ type Nalog = {
 
 const NalogTable: React.FC = () => {
   const [nalozi, setNalozi] = useState<Nalog[]>([]);
+  const navigate = useNavigate();
 
   // Dohvaćanje svih naloga
   useEffect(() => {
@@ -24,14 +26,14 @@ const NalogTable: React.FC = () => {
     try {
       // Dohvati trenutni nalog
       const response = await fetch(`http://localhost:8080/api/nalozi/${id}`);
-      const nalog = await response.json();
+      const nalogpr = await response.json();
 
       // Prebaci status
       const updatedStatus =
-        nalog.statusNalog === "Aktivan" ? "Završen" : "Aktivan";
+        nalogpr.statusNalog === "Aktivan" ? "Završen" : "Aktivan";
 
       // Ažuriraj nalog
-      const updatedNalog = { ...nalog, statusNalog: updatedStatus };
+      const updatedNalog = { ...nalogpr, statusNalog: updatedStatus };
 
       await fetch(`http://localhost:8080/api/nalozi/update/${id}`, {
         method: "PUT",
@@ -41,14 +43,10 @@ const NalogTable: React.FC = () => {
         body: JSON.stringify(updatedNalog),
       });
 
-      // Osvježi stanje naloga
-      setNalozi((prevNalozi) =>
-        prevNalozi.map((n) =>
-          n.id === id ? { ...n, statusNalog: updatedStatus } : n
-        )
-      );
+
 
       alert(`Status naloga ${id} uspješno promijenjen na "${updatedStatus}".`);
+      navigate(0);
     } catch (error) {
       console.error("Error updating nalog:", error);
       alert("Došlo je do pogreške prilikom ažuriranja naloga.");

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -87,5 +88,38 @@ public class NalogService {
     public Nalog saveNalog(Nalog nalog) {
         nalogRepository.save(nalog);
         return nalog;
+    }
+
+    public Nalog changeStatus(Integer nalogId) {
+        // Pronađi nalog prema ID-ju
+        Nalog nalog = nalogRepository.findById(nalogId)
+                .orElseThrow(() -> new IllegalArgumentException("Nalog s ID-jem " + nalogId + " ne postoji"));
+
+        // Promijeni status
+        String currentStatus = nalog.getStatusNalog();
+        String newStatus;
+
+        if ("Aktivan".equalsIgnoreCase(currentStatus)) {
+            newStatus = "Završen";
+        } else {
+            newStatus = "Aktivan";
+        }
+
+        nalog.setStatusNalog(newStatus);
+
+        // Spremi ažurirani nalog u bazu
+        return nalogRepository.save(nalog);
+    }
+
+    public Optional<Nalog> findNalogById(Integer id) {
+        return nalogRepository.findById(id);
+    }
+
+    public void save(Nalog nalog) {
+        nalogRepository.save(nalog);
+    }
+
+    public Optional<Nalog> findById(Integer idNalog) {
+        return nalogRepository.findById(idNalog);
     }
 }
