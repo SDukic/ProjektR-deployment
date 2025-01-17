@@ -1,0 +1,100 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f4ff; /* Svijetloplava pozadina */
+  margin: 0;
+  padding: 0;
+}
+
+nav {
+  background-color: #007bff; /* Plava pozadina za navigaciju */
+  padding: 15px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+nav ul li a {
+  color: white; /* Bijela boja za linkove */
+  text-decoration: none; /* Ukloni podcrtavanje */
+  font-weight: bold;
+  transition: color 0.3s; /* Efekt pri prelasku miša */
+}
+
+nav ul li a:hover {
+  color: #cce4ff; /* Svijetloplava boja pri prelasku miša */
+}
+
+.form-container, .table-container {
+  width: 50%;
+  margin: 20px auto; /* Dodaj malo razmaka između formi i tablica */
+  padding: 20px;
+  background-color: #ffffff; /* Bijela pozadina za forme i tablice */
+  border-radius: 10px; /* Zaobljeni kutovi */
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form input, .form button {
+  display: block;
+  width: 100%;
+  margin-bottom: 15px; /* Veći razmak između elemenata */
+  padding: 12px; /* Veće unutarnje margine */
+  font-size: 16px;
+  border: 1px solid #007bff; /* Plavi okvir */
+  border-radius: 5px; /* Zaobljeni kutovi */
+  transition: border-color 0.3s; /* Efekt pri fokusu */
+}
+
+.form input:focus {
+  border-color: #0056b3; /* Tamnija plava boja pri fokusu */
+  outline: none; /* Ukloni standardni outline */
+}
+
+.form button {
+  background-color: #007bff; /* Plava boja za gumb */
+  color: white; /* Bijela boja teksta */
+  cursor: pointer; /* Promjena kursora na gumbu */
+}
+
+.form button:hover {
+  background-color: #0056b3; /* Tamnija plava boja pri prelasku miša */
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.data-table th, .data-table td {
+  border: 1px solid #ddd;
+  padding: 12px; /* Veće unutarnje margine */
+  text-align: left;
+}
+
+.data-table th {
+  background-color: #007bff; /* Plava pozadina za zaglavlja tablice */
+  color: white; /* Bijela boja za tekst u zaglavljima */
+}
+
+.data-table tr:nth-child(even) {
+  background-color: #f2f2f2; /* Svijetlosiva boja za parne redove */
+}
+
+.data-table th {
+  background-color: #007bff; /* Plava pozadina za zaglavlja tablice */
+  color: white; /* Bijela boja za tekst u zaglavljima */
+  cursor: pointer; /* Promjena kursora na gumbu */
+  padding: 12px; /* Veće unutarnje margine */
+  transition: background-color 0.3s; /* Efekt pri hoveru */
+}
+
+.data-table th:hover {
+  background-color: #0056b3; /* Tamnija plava boja pri prelasku miša */
+}
