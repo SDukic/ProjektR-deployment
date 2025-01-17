@@ -57,9 +57,17 @@ const NalogDetails: React.FC = () => {
       const response = await fetch(`http://localhost:8080/api/nalozi/${id}`);
       const nalogpr = await response.json();
 
-      // Prebaci status
-      const updatedStatus =
-        nalogpr.statusNalog === "Aktivan" ? "Završen" : "Aktivan";
+
+      let updatedStatus = "null";
+      console.log(nalogpr.statusNalog);
+
+      if (nalogpr.statusNalog === "Aktivan") {
+        updatedStatus = "Završen"
+      } else {
+        updatedStatus = "Aktivan"
+      }
+
+      console.log(updatedStatus);
 
       // Ažuriraj nalog
       const updatedNalog = { ...nalogpr, statusNalog: updatedStatus };
@@ -69,7 +77,7 @@ const NalogDetails: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedStatus),
+        body: updatedStatus,
       });
 
 

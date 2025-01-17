@@ -27,17 +27,18 @@ const NalogTable: React.FC = () => {
       // Dohvati trenutni nalog
       const response = await fetch(`http://localhost:8080/api/nalozi/${id}`);
       const nalogpr = await response.json();
-      let result = nalogpr.statusNalog.slice(1,-1);
 
-      let updatedStatus = "sranje";
 
-      if (result = "Aktivan") {
+      let updatedStatus = "null";
+      console.log(nalogpr.statusNalog);
+
+      if (nalogpr.statusNalog === "Aktivan") {
         updatedStatus = "Završen"
       } else {
         updatedStatus = "Aktivan"
       }
 
-      
+      console.log(updatedStatus);
 
       // Ažuriraj nalog
       const updatedNalog = { ...nalogpr, statusNalog: updatedStatus };
@@ -47,7 +48,7 @@ const NalogTable: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedStatus),
+        body: updatedStatus,
       });
 
 
