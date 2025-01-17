@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -42,9 +43,16 @@ public class NalogController {
     }
 
     @GetMapping("/radnik/{radnikId}")
-    public ResponseEntity<List<NalogDTO>> getAllNaloziByRadnikId(@PathVariable Radnik radnikId) {
-        List<NalogDTO> nalozi = nalogService.getAllNaloziByRadnikId(radnikId);
-        return ResponseEntity.ok(nalozi);
+    public ResponseEntity<List<NalogDTO>> getAllNaloziByRadnikId(@PathVariable Integer radnikId) {
+        try {
+            Radnik radnik = radnikService.findRadnikById(radnikId)
+                    .orElseThrow(() -> new EntityNotFoundException("Radnik with ID " + radnikId + " not found"));
+
+            List<NalogDTO> nalozi = nalogService.getAllNaloziByRadnikId(radnik);
+            return ResponseEntity.ok(nalozi);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
     }
 
     @GetMapping("/radnik/nalog/{idnalog}")
@@ -69,16 +77,16 @@ public class NalogController {
             @PathVariable Integer idRadnik) {
         try {
             Nalog nalog = nalogService.getNalogByIdNalog(idNalog);
-            Radnik radnik = radnikService.findRadnikById(idRadnik)
-                    .orElseThrow(() -> new RuntimeException("Radnik nije pronađen"));
+            Radnik radnik = radnikService.findRadnikById(idRadnik).orElseThrow(
+                    () -> new EntityNotFoundException("Radnik sa id: " + idRadnik + "nije pronađen.")
+            );
             nalog.setIdRadnik(radnik);
-            Nalog updatedNalog = nalogService.saveNalog(nalog); // Pretpostavlja se da postoji `saveNalog` metoda u servisu
+            Nalog updatedNalog = nalogService.saveNalog(nalog);
             return ResponseEntity.ok(updatedNalog);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
     @DeleteMapping("/delete/{id}")
     public void deleteNalog(@PathVariable Integer id) {

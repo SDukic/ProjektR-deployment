@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,7 +47,10 @@ public class NalogService {
     }
 
     public List<NalogDTO> getAllNaloziByRadnikId(Radnik radnikId) {
-        return nalogRepository.findByIdRadnik(radnikId).stream()
+        return Optional.ofNullable(nalogRepository.findByIdRadnik(radnikId))
+                .filter(list -> !list.isEmpty())
+                .orElseThrow(() -> new EntityNotFoundException("Nalozi not found for Radnik id: " + radnikId))
+                .stream()
                 .map(NalogDTO::new)
                 .collect(Collectors.toList());
     }
