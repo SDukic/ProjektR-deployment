@@ -6,6 +6,7 @@ type Radnik = {
   imeRadnik: string;
   prezimeRadnik: string;
   telefonRadnik: string | null;
+  password: string | null;
 };
 
 const RadnikTable: React.FC = () => {
@@ -15,6 +16,7 @@ const RadnikTable: React.FC = () => {
     imeRadnik: "",
     prezimeRadnik: "",
     telefonRadnik: "",
+    password: ""
   });
 
   // Dohvaćanje svih radnika
@@ -39,7 +41,7 @@ const RadnikTable: React.FC = () => {
       .then((response) => response.json())
       .then((createdRadnik) => {
         setRadnici((prevRadnici) => [...prevRadnici, createdRadnik]);
-        setNewRadnik({ imeRadnik: "", prezimeRadnik: "", telefonRadnik: "" });
+        setNewRadnik({ imeRadnik: "", prezimeRadnik: "", telefonRadnik: "", password: "" });
         setShowForm(false);
       })
       .catch((error) => console.error("Error adding radnik:", error));
@@ -106,6 +108,21 @@ const RadnikTable: React.FC = () => {
                   telefonRadnik: e.target.value || null,
                 }))
               }
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="text"
+              value={newRadnik.password || ""}
+              onChange={(e) =>
+                setNewRadnik((prev) => ({
+                  ...prev,
+                  passwordRadnik: e.target.value || null,
+                }))
+              }
+              required
             />
           </div>
           <button type="submit" className="submit-button">

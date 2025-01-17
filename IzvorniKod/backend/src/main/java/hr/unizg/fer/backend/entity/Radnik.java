@@ -25,6 +25,11 @@ public class Radnik {
     @Column(name = "telefon_radnik", length = 20)
     private String telefonRadnik;
 
+    @Column(name = "password", length = 20)
+    private String password;
+
+
+
     // cascade = CascadeType.ALL ?
     @OneToMany(mappedBy = "idRadnik")
     @JsonManagedReference("radnik-nalozi")
@@ -68,6 +73,14 @@ public class Radnik {
 
     public void setTelefonRadnik(String telefonRadnik) {
         this.telefonRadnik = telefonRadnik;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }
