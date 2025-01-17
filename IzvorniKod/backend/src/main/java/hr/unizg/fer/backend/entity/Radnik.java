@@ -25,14 +25,13 @@ public class Radnik {
     @Column(name = "telefon_radnik", length = 20)
     private String telefonRadnik;
 
-    @OneToMany(mappedBy = "idRadnik", cascade = CascadeType.PERSIST)
+
     @Column(name = "password", length = 20)
     private String password;
 
 
-
     // cascade = CascadeType.ALL ?
-    @OneToMany(mappedBy = "idRadnik")
+    @OneToMany(mappedBy = "idRadnik", cascade = CascadeType.PERSIST)
     @JsonManagedReference("radnik-nalozi")
     private Set<Nalog> nalogs = new LinkedHashSet<>();
 

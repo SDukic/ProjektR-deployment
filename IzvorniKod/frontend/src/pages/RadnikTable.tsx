@@ -6,7 +6,7 @@ type Radnik = {
   imeRadnik: string;
   prezimeRadnik: string;
   telefonRadnik: string | null;
-  password: string | null;
+  password: string;
 };
 
 const RadnikTable: React.FC = () => {
@@ -110,21 +110,22 @@ const RadnikTable: React.FC = () => {
               }
               required
             />
-          </div>
-          <div className="form-group">
+            </div>
+            <div className="form-group">
             <label>Password</label>
             <input
               type="text"
-              value={newRadnik.password || ""}
+              value={newRadnik.password}
               onChange={(e) =>
                 setNewRadnik((prev) => ({
                   ...prev,
-                  passwordRadnik: e.target.value || null,
+                  password: e.target.value,
                 }))
               }
               required
             />
           </div>
+          
           <button type="submit" className="submit-button">
             Dodaj
           </button>
