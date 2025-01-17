@@ -25,6 +25,7 @@ public class Radnik {
     @Column(name = "telefon_radnik", length = 20)
     private String telefonRadnik;
 
+    @OneToMany(mappedBy = "idRadnik", cascade = CascadeType.PERSIST)
     @Column(name = "password", length = 20)
     private String password;
 
@@ -75,6 +76,12 @@ public class Radnik {
         this.telefonRadnik = telefonRadnik;
     }
 
+    @PreRemove
+    private void preRemove() {
+        for (Nalog nalog : nalogs) {
+            nalog.setIdRadnik(null);
+        }
+    }
     public String getPassword() {
         return password;
     }
