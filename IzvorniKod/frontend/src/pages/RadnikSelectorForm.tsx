@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "./loginScripts/axios"; // Importanje instancu Axios-a
 
 type Radnik = {
   id: number;
@@ -18,12 +18,18 @@ const RadnikSelectorForm = () => {
   const { nalogId } = useParams<{ nalogId: string }>();
   const navigate = useNavigate();
 
-  // Fetch the list of Radnici from the API
+  // Fetch the list of Radnici from the API using Axios instance
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/radnici/all")
-      .then((response) => setRadnici(response.data))
-      .catch((err) => setError("Failed to load radnici. Please try again."));
+    const fetchRadnici = async () => {
+      try {
+        const response = await api.get("http://localhost:8080/api/radnici/all");
+        setRadnici(response.data);
+      } catch (err) {
+        setError("Failed to load radnici. Please try again.");
+      }
+    };
+
+    fetchRadnici();
   }, []);
 
   // Handle Radnik selection
@@ -47,7 +53,7 @@ const RadnikSelectorForm = () => {
 
     try {
       const payload = { idNalog: Number(nalogId), idRadnik: selectedRadnikId };
-      await axios.post("http://localhost:8080/api/nalozi/radnik", payload);
+      await api.post("http://localhost:8080/api/nalozi/radnik", payload);
       alert("Radnik successfully assigned to the Nalog!");
       navigate(`/NalogDetails/${nalogId}`);
     } catch (err) {

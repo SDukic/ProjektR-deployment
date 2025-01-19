@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./../styles/KupacTable.css";
+import api from "./loginScripts/axios"; // Importanje instancu Axios-a
+
 
 type Kupac = {
   id: number;
@@ -19,9 +21,12 @@ const KupacTable: React.FC = () => {
 
   // Dohvaćanje svih kupaca
   useEffect(() => {
-    fetch("http://localhost:8080/api/kupci/all")
-      .then((response) => response.json())
-      .then((data) => setKupci(data))
+    api
+      .get("/kupci/all")
+      .then((response) => {
+        console.log("Fetched kupci:", response.data);
+        setKupci(response.data);
+      })
       .catch((error) => console.error("Error fetching kupci:", error));
   }, []);
 
@@ -31,14 +36,11 @@ const KupacTable: React.FC = () => {
 
     const kupacData = { ...newKupac, brojila: [] };
 
-    fetch("http://localhost:8080/api/kupci/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(kupacData),
-    })
-      .then((response) => response.json())
-      .then((createdKupac) => {
-        setKupci((prevKupci) => [...prevKupci, createdKupac]);
+    api
+      .post("/kupci/create", kupacData)
+      .then((response) => {
+        console.log("Created kupac:", response.data);
+        setKupci((prevKupci) => [...prevKupci, response.data]);
         setNewKupac({ imeKupac: "", prezimeKupac: "", telefonKupac: "" });
         setShowForm(false);
       })
@@ -47,9 +49,8 @@ const KupacTable: React.FC = () => {
 
   // Brisanje kupca
   const handleDeleteKupac = (id: number) => {
-    fetch(`http://localhost:8080/api/kupci/delete/${id}`, {
-      method: "DELETE",
-    })
+    api
+      .delete(`/kupci/delete/${id}`)
       .then(() => {
         setKupci((prevKupci) => prevKupci.filter((kupac) => kupac.id !== id));
       })
@@ -85,7 +86,10 @@ const KupacTable: React.FC = () => {
               type="text"
               value={newKupac.prezimeKupac}
               onChange={(e) =>
-                setNewKupac((prev) => ({ ...prev, prezimeKupac: e.target.value }))
+                setNewKupac((prev) => ({
+                  ...prev,
+                  prezimeKupac: e.target.value,
+                }))
               }
               required
             />

@@ -1,43 +1,59 @@
-// App.tsx
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import NavigationHeader from "./pages/NavigationHeader";
 import NalogTable from "./pages/NalogTable";
 import NalogDetails from "./pages/NalogDetails";
 import StavkaNalogaDetails from "./pages/StavkaNalogaDetails";
 import StavkaNalogaForm from "./pages/StavkaNalogaForm";
 import LoginPage from "./pages/LoginPage";
-import BrojiloTable from "./pages/BrojiloTable"; // Nova stranica za brojila
+import BrojiloTable from "./pages/BrojiloTable";
 import KupacTable from "./pages/KupacTable";
 import RadnikTable from "./pages/RadnikTable";
 import RadnikSelectorForm from "./pages/RadnikSelectorForm";
 import RadnikTasks from "./pages/RadnikTasks";
 import TaskDetail from "./pages/TaskDetail";
-import { AuthProvider } from "./pages/loginScripts/AuthContext";
+import { AuthProvider, useAuth } from "./pages/loginScripts/AuthContext";
 
+const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+  const { role } = useAuth();
+
+  // Ako je uloga "radnik", spriječavamo pristup rutama koje nisu vezane za njega
+  if (role === "radnik") {
+    return <Navigate to="/login" />;
+  }
+
+  return children; // Ako je admin, dopuštamo pristup
+};
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
-    <Router>
-      <NavigationHeader /> {/* Uključujemo navigacijski header */}
-      <div className="content">
-        <Routes>
-          <Route path="/" element={<NalogTable />} />
-          <Route path="/NalogDetails/:nalogId" element={<NalogDetails />} />
-          <Route path="/StavkaNalogaDetails/:stavkaId" element={<StavkaNalogaDetails />} />
-          <Route path="/StavkaNalogaForm/:nalogId" element={<StavkaNalogaForm />} />
-          <Route path="/kupci" element={<KupacTable />} />
-          <Route path="/radnici" element={<RadnikTable />} />
-          <Route path="/RadnikSelectorForm/:nalogId" element={<RadnikSelectorForm />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/BrojiloTable" element={<BrojiloTable />} /> {/* Nova ruta */}
-          <Route path="/RadnikTasks" element={<RadnikTasks />} /> {/* Nova ruta */}
-          <Route path="/TaskDetail/:nalogId" element={<TaskDetail />} />
-        </Routes>
-      </div>
+      <Router>
+        <NavigationHeader />
+        <div className="content">
+          <Routes>
+            {/* Routes accessible by anyone, including radnik */}
+            <Route path="/login" element={<LoginPage />} />
+
+            {/* Routes accessible only by admin */}
+            <Route path="/" element={<ProtectedRoute><NalogTable /></ProtectedRoute>} />
+            <Route path="/NalogTable" element={<ProtectedRoute><NalogTable /></ProtectedRoute>} />
+            <Route path="/NalogDetails/:nalogId" element={<ProtectedRoute><NalogDetails /></ProtectedRoute>} />
+            <Route path="/StavkaNalogaDetails/:stavkaId" element={<ProtectedRoute><StavkaNalogaDetails /></ProtectedRoute>} />
+            <Route path="/StavkaNalogaForm/:nalogId" element={<ProtectedRoute><StavkaNalogaForm /></ProtectedRoute>} />
+            <Route path="/kupci" element={<ProtectedRoute><KupacTable /></ProtectedRoute>} />
+            <Route path="/radnici" element={<ProtectedRoute><RadnikTable /></ProtectedRoute>} />
+            <Route path="/RadnikSelectorForm/:nalogId" element={<ProtectedRoute><RadnikSelectorForm /></ProtectedRoute>} />
+            <Route path="/BrojiloTable" element={<ProtectedRoute><BrojiloTable /></ProtectedRoute>} />
+            
+            {/* Radnik can access these routes */}
+            <Route path="/RadnikTasks" element={<RadnikTasks />} />
+            <Route path="/TaskDetail/:nalogId" element={<TaskDetail />} />
+
+          </Routes>
+        </div>
       </Router>
-      </AuthProvider>
+    </AuthProvider>
   );
 };
 

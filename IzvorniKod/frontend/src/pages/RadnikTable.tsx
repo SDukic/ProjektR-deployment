@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./../styles/RadnikTable.css";
+import api from "./loginScripts/axios"; // Importanje instancu Axios-a
 
 type Radnik = {
   id: number;
@@ -16,48 +17,49 @@ const RadnikTable: React.FC = () => {
     imeRadnik: "",
     prezimeRadnik: "",
     telefonRadnik: "",
-    password: ""
+    password: "",
   });
 
-  // Dohvaćanje svih radnika
+  // Dohvaćanje svih radnika s API-jem koristeći Axios instancu
   useEffect(() => {
-    fetch("http://localhost:8080/api/radnici/all")
-      .then((response) => response.json())
-      .then((data) => setRadnici(data))
-      .catch((error) => console.error("Error fetching radnici:", error));
+    const fetchRadnici = async () => {
+      try {
+        const response = await api.get("http://localhost:8080/api/radnici/all");
+        setRadnici(response.data);
+      } catch (error) {
+        console.error("Error fetching radnici:", error);
+      }
+    };
+
+    fetchRadnici();
   }, []);
 
-  // Dodavanje novog radnika
-  const handleAddRadnik = (event: React.FormEvent) => {
+  // Dodavanje novog radnika s Axios-om
+  const handleAddRadnik = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const radnikData = { ...newRadnik, nalogs: [] };
 
-    fetch("http://localhost:8080/api/radnici/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(radnikData),
-    })
-      .then((response) => response.json())
-      .then((createdRadnik) => {
-        setRadnici((prevRadnici) => [...prevRadnici, createdRadnik]);
-        setNewRadnik({ imeRadnik: "", prezimeRadnik: "", telefonRadnik: "", password: "" });
-        setShowForm(false);
-      })
-      .catch((error) => console.error("Error adding radnik:", error));
+    try {
+      const response = await api.post("http://localhost:8080/api/radnici/create", radnikData);
+      setRadnici((prevRadnici) => [...prevRadnici, response.data]);
+      setNewRadnik({ imeRadnik: "", prezimeRadnik: "", telefonRadnik: "", password: "" });
+      setShowForm(false);
+    } catch (error) {
+      console.error("Error adding radnik:", error);
+    }
   };
 
-  // Brisanje radnika
-  const handleDeleteRadnik = (id: number) => {
-    fetch(`http://localhost:8080/api/radnici/delete/${id}`, {
-      method: "DELETE",
-    })
-      .then(() => {
-        setRadnici((prevRadnici) =>
-          prevRadnici.filter((radnik) => radnik.id !== id)
-        );
-      })
-      .catch((error) => console.error("Error deleting radnik:", error));
+  // Brisanje radnika s API-jem koristeći Axios
+  const handleDeleteRadnik = async (id: number) => {
+    try {
+      await api.delete(`http://localhost:8080/api/radnici/delete/${id}`);
+      setRadnici((prevRadnici) =>
+        prevRadnici.filter((radnik) => radnik.id !== id)
+      );
+    } catch (error) {
+      console.error("Error deleting radnik:", error);
+    }
   };
 
   return (
@@ -110,9 +112,9 @@ const RadnikTable: React.FC = () => {
               }
               required
             />
-            </div>
-            <div className="form-group">
-            <label>Password</label>
+          </div>
+          <div className="form-group">
+            <label>Password:</label>
             <input
               type="text"
               value={newRadnik.password}
@@ -125,7 +127,6 @@ const RadnikTable: React.FC = () => {
               required
             />
           </div>
-          
           <button type="submit" className="submit-button">
             Dodaj
           </button>

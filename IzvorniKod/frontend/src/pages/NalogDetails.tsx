@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import StavkaNalogaDetails from "./StavkaNalogaDetails";
-import axios from "axios";
+import api from "./loginScripts/axios"; // Importanje instancu Axios-a
 import "./../styles/NalogDetails.css";
-
 
 type StavkaNaloga = {
   id: number;
@@ -35,52 +34,34 @@ const NalogDetails: React.FC = () => {
 
   // Fetch nalog data
   useEffect(() => {
-    axios
-      .get(`http://localhost:8080/api/nalozi/${nalogId}`)
+    api
+      .get(`/nalozi/${nalogId}`)
       .then((response) => setNalog(response.data))
       .catch((error) => console.error("Error fetching nalog details:", error));
   }, [nalogId]);
-  console.log(nalog);
-  console.log(nalog?.radnik);
 
   // Fetch radnici data
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/radnici/all")
+    api
+      .get("/radnici/all")
       .then((response) => setRadnici(response.data))
       .catch((error) => console.error("Error fetching radnici:", error));
   }, []);
 
   const handleStatusChange = async (id: number) => {
     try {
-      // Dohvati trenutni nalog
-      const response = await fetch(`http://localhost:8080/api/nalozi/${id}`);
-      const nalogpr = await response.json();
-
+      const response = await api.get(`/nalozi/${id}`);
+      const nalogpr = response.data;
 
       let updatedStatus = "null";
-      console.log(nalogpr.statusNalog);
-
       if (nalogpr.statusNalog === "Aktivan") {
-        updatedStatus = "Završen"
+        updatedStatus = "Završen";
       } else {
-        updatedStatus = "Aktivan"
+        updatedStatus = "Aktivan";
       }
 
-      console.log(updatedStatus);
-
-      // Ažuriraj nalog
-      const updatedNalog = { ...nalogpr, statusNalog: updatedStatus };
-
-      await fetch(`http://localhost:8080/api/nalozi/update/${id}/status`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: updatedStatus,
-      });
-
-
+      // Ažuriraj status naloga
+      await api.put(`/nalozi/update/${id}/status`, { statusNalog: updatedStatus });
 
       alert(`Status naloga ${id} uspješno promijenjen na "${updatedStatus}".`);
       navigate(0);
@@ -96,12 +77,11 @@ const NalogDetails: React.FC = () => {
       alert("Odaberite radnika i provjerite podatke naloga.");
       return;
     }
-  
+
     try {
-      await axios.put(
-        `http://localhost:8080/api/nalozi/${nalogId}/dodjeliRadnika/${selectedRadnikId}`
+      await api.put(
+        `/nalozi/${nalogId}/dodjeliRadnika/${selectedRadnikId}`
       );
-      console.log(selectedRadnikId);
       alert("Radnik je uspješno dodijeljen!");
       navigate(0);
     } catch (error) {
@@ -153,31 +133,31 @@ const NalogDetails: React.FC = () => {
       <h3>Radnik Zaduženi za Ovaj Nalog</h3>
       {nalog.radnik ? (
         <div>
-        <p>
-          <strong>Ime radnika:</strong> {nalog.radnik.imeRadnik} <br />
-          <strong>Prezime radnika:</strong> {nalog.radnik.prezimeRadnik} <br />
-          <strong>Telefon radnika:</strong> {nalog.radnik.telefonRadnik} <br />
-          <strong>ID radnika:</strong> {nalog.radnik.id}
-        </p>
-        <h3>Promjenite radnika</h3>
-        <ul>
-          {radnici.map((radnik) => (
-            <li key={radnik.id}>
-              <label>
-                <input
-                  type="radio"
-                  name="radnik"
-                  value={radnik.id}
-                  onChange={() => setSelectedRadnikId(radnik.id)}
-                />
-                {`${radnik.imeRadnik} ${radnik.prezimeRadnik}, Telefon: ${radnik.telefonRadnik}`}
-              </label>
-            </li>
-          ))}
-        </ul>
-        <button onClick={handleRadnikSubmit} disabled={!selectedRadnikId}>
-          Dodijeli Radnika
-        </button>
+          <p>
+            <strong>Ime radnika:</strong> {nalog.radnik.imeRadnik} <br />
+            <strong>Prezime radnika:</strong> {nalog.radnik.prezimeRadnik} <br />
+            <strong>Telefon radnika:</strong> {nalog.radnik.telefonRadnik} <br />
+            <strong>ID radnika:</strong> {nalog.radnik.id}
+          </p>
+          <h3>Promjenite radnika</h3>
+          <ul>
+            {radnici.map((radnik) => (
+              <li key={radnik.id}>
+                <label>
+                  <input
+                    type="radio"
+                    name="radnik"
+                    value={radnik.id}
+                    onChange={() => setSelectedRadnikId(radnik.id)}
+                  />
+                  {`${radnik.imeRadnik} ${radnik.prezimeRadnik}, Telefon: ${radnik.telefonRadnik}`}
+                </label>
+              </li>
+            ))}
+          </ul>
+          <button onClick={handleRadnikSubmit} disabled={!selectedRadnikId}>
+            Dodijeli Radnika
+          </button>
         </div>
       ) : (
         <div>

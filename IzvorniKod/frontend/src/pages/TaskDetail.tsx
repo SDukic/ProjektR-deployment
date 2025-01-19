@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "./loginScripts/axios"; // Importanje Axios instance
 import "./../styles/NalogDetails.css";
-
 
 type StavkaNaloga = {
   id: number;
@@ -24,15 +23,13 @@ type Radnik = {
   telefonRadnik: string;
 };
 
-
-
 const TaskDetail: React.FC = () => {
   const [nalog, setNalog] = useState<Nalog | null>(null);
   const { nalogId } = useParams<{ nalogId: string }>();
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios
+    api
       .get(`http://localhost:8080/api/nalozi/${nalogId}`)
       .then((response) => setNalog(response.data))
       .catch((error) => console.error("Error fetching nalog details:", error));
@@ -41,17 +38,16 @@ const TaskDetail: React.FC = () => {
   const handleStatusChange = async (id: number) => {
     try {
       // Dohvati trenutni nalog
-      const response = await fetch(`http://localhost:8080/api/nalozi/${id}`);
-      const nalogpr = await response.json();
-
+      const response = await api.get(`http://localhost:8080/api/nalozi/${id}`);
+      const nalogpr = response.data;
 
       let updatedStatus = "null";
       console.log(nalogpr.statusNalog);
 
       if (nalogpr.statusNalog === "Aktivan") {
-        updatedStatus = "Završen"
+        updatedStatus = "Završen";
       } else {
-        updatedStatus = "Aktivan"
+        updatedStatus = "Aktivan";
       }
 
       console.log(updatedStatus);
@@ -59,15 +55,11 @@ const TaskDetail: React.FC = () => {
       // Ažuriraj nalog
       const updatedNalog = { ...nalogpr, statusNalog: updatedStatus };
 
-      await fetch(`http://localhost:8080/api/nalozi/update/${id}/status`, {
-        method: "PUT",
+      await api.put(`http://localhost:8080/api/nalozi/update/${id}/status`, updatedStatus, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: updatedStatus,
       });
-
-
 
       alert(`Status naloga ${id} uspješno promijenjen na "${updatedStatus}".`);
       navigate(0);
@@ -95,18 +87,18 @@ const TaskDetail: React.FC = () => {
       </p>
 
       <p>PROMJENI STATUS NALOGA</p>
-            <button className="open-form-button" onClick={() => handleStatusChange(nalog.id)}>
-              PROMJENI STATUS
-            </button>
-      
-            <h3>Zadaci na ovom nalogu</h3>
-            <ul>
-              {nalog.stavkeNaloga.map((stavka) => (
-                <Link to={`/StavkaNalogaDetails/${stavka.id}`} key={stavka.id}>
-                  <strong>ID stavke:</strong> {stavka.id} <br />
-                </Link>
-              ))}
-            </ul>
+      <button className="open-form-button" onClick={() => handleStatusChange(nalog.id)}>
+        PROMJENI STATUS
+      </button>
+
+      <h3>Zadaci na ovom nalogu</h3>
+      <ul>
+        {nalog.stavkeNaloga.map((stavka) => (
+          <Link to={`/StavkaNalogaDetails/${stavka.id}`} key={stavka.id}>
+            <strong>ID stavke:</strong> {stavka.id} <br />
+          </Link>
+        ))}
+      </ul>
 
       <h3>Radnik Zaduženi za Ovaj Nalog</h3>
       {nalog.radnik ? (

@@ -3,6 +3,7 @@ package hr.unizg.fer.backend.websecurity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -45,8 +46,11 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/login").permitAll() // Login je dostupan svima
                         .anyRequest().authenticated() // Sve ostalo zahtijeva autentifikaciju
+                       
                 )
+
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Povezivanje CORS konfiguracije sa Spring Security
+
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Dodajte filter prije autentifikacije korisnika
         return http.build();
     }

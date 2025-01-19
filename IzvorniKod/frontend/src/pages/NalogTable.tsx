@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./../styles/NalogTable.css";
-
+import api from "./loginScripts/axios"; // Importanje instancu Axios-a
 
 type Nalog = {
   id: number;
@@ -16,68 +16,47 @@ const NalogTable: React.FC = () => {
 
   // Dohvaćanje svih naloga
   useEffect(() => {
-    fetch("http://localhost:8080/api/nalozi/all")
-      .then((response) => response.json())
-      .then((data) => setNalozi(data))
+    api
+      .get("/nalozi/all")
+      .then((response) => setNalozi(response.data))
       .catch((error) => console.error("Error fetching nalozi:", error));
   }, []);
 
   const handleFilterByRadnik = () => {
     if (radnikId === "") {
-      // If input is empty, show all nalozi
-      fetch("http://localhost:8080/api/nalozi/all")
-        .then((response) => response.json())
-        .then((data) => setNalozi(data))
+      // Ako je input prazan, dohvatite sve naloge
+      api
+        .get("/nalozi/all")
+        .then((response) => setNalozi(response.data))
         .catch((error) => console.error("Error fetching all nalozi:", error));
       return;
     }
-  
-    fetch(`http://localhost:8080/api/nalozi/radnik/${radnikId}`)
-      .then((response) => {
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error(`Radnik with ID ${radnikId} does not exist.`);
-          } else {
-            throw new Error("An error occurred while fetching data.");
-          }
+
+    api
+      .get(`/nalozi/radnik/${radnikId}`)
+      .then((response) => setNalozi(response.data))
+      .catch((error) => {
+        if (error.response?.status === 404) {
+          alert(`Radnik s ID-jem ${radnikId} ne postoji.`);
+        } else {
+          console.error("Error fetching nalozi for radnik:", error);
         }
-        return response.json();
-      })
-      .then((data) => setNalozi(data))
-      .catch((error) => alert(error.message));
+      });
   };
 
   // Funkcija za ažuriranje statusa naloga
   const handleStatusChange = async (id: number) => {
     try {
-      // Dohvati trenutni nalog
-      const response = await fetch(`http://localhost:8080/api/nalozi/${id}`);
-      const nalogpr = await response.json();
+      const response = await api.get(`/nalozi/${id}`);
+      const nalog = response.data;
 
+      let updatedStatus = nalog.statusNalog === "Aktivan" ? "Završen" : "Aktivan";
 
-      let updatedStatus = "null";
-      console.log(nalogpr.statusNalog);
-
-      if (nalogpr.statusNalog === "Aktivan") {
-        updatedStatus = "Završen"
-      } else {
-        updatedStatus = "Aktivan"
-      }
-
-      console.log(updatedStatus);
-
-      // Ažuriraj nalog
-      const updatedNalog = { ...nalogpr, statusNalog: updatedStatus };
-
-      await fetch(`http://localhost:8080/api/nalozi/update/${id}/status`, {
-        method: "PUT",
+      await api.put(`/nalozi/update/${id}/status`, updatedStatus, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "text/plain",
         },
-        body: updatedStatus,
       });
-
-
 
       alert(`Status naloga ${id} uspješno promijenjen na "${updatedStatus}".`);
       navigate(0);
@@ -89,38 +68,24 @@ const NalogTable: React.FC = () => {
 
   const handleCreateNalog = () => {
     const newNalog = {
-      datumNalog: new Date().toISOString(), // Postavi trenutni datum i vrijeme u ISO formatu
-      statusNalog: "Aktivan" // Postavi status na "Aktivan"
+      datumNalog: new Date().toISOString(),
+      statusNalog: "Aktivan",
     };
 
-    fetch("http://localhost:8080/api/nalozi/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(newNalog)
-    })
+    api
+      .post("/nalozi/create", newNalog)
       .then((response) => {
-        if (!response.ok) {
-          return response.text().then((text) => { throw new Error(text) });
-        }
-        return response.json();
-      })
-      .then((createdNalog) => {
+        const createdNalog = response.data;
         setNalozi((prevNalozi) => [...prevNalozi, createdNalog]);
-        navigate(`/NalogDetails/${createdNalog.id}`); // Navigiraj na stranicu s detaljima novog naloga
+        navigate(`/NalogDetails/${createdNalog.id}`);
       })
       .catch((error) => console.error("Error creating nalog:", error));
   };
 
   const handleDeleteNalog = (id: number) => {
-    fetch(`http://localhost:8080/api/nalozi/delete/${id}`, {
-      method: "DELETE"
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.text().then((text) => { throw new Error(text) });
-        }
+    api
+      .delete(`/nalozi/delete/${id}`)
+      .then(() => {
         setNalozi((prevNalozi) => prevNalozi.filter((nalog) => nalog.id !== id));
       })
       .catch((error) => console.error("Error deleting nalog:", error));
@@ -185,7 +150,7 @@ const NalogTable: React.FC = () => {
                     marginLeft: "10px",
                     backgroundColor: nalog.statusNalog === "Završen" ? "red" : "grey",
                     color: "white",
-                    cursor: nalog.statusNalog === "Završen" ? "pointer" : "not-allowed"
+                    cursor: nalog.statusNalog === "Završen" ? "pointer" : "not-allowed",
                   }}
                   disabled={nalog.statusNalog !== "Završen"}
                 >

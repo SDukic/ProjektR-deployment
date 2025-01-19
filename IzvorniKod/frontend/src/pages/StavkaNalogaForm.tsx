@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "./loginScripts/axios"; // Importanje Axios instance
 
 type Brojilo = {
   id: number;
@@ -18,11 +18,11 @@ const BrojiloSelectorForm = () => {
   const { nalogId } = useParams<{ nalogId: string }>();
   const navigate = useNavigate();
 
-  // Fetch the list of Brojila from the API
+  // Fetch the list of Brojila from the API using the Axios instance
   useEffect(() => {
     const fetchBrojila = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/brojila/all");
+        const response = await api.get("http://localhost:8080/api/brojila/all");
         const data = response.data;
 
         if (Array.isArray(data)) {
@@ -45,7 +45,7 @@ const BrojiloSelectorForm = () => {
     setSelectedBrojiloId(id);
   };
 
-  // Submit the selected Brojilo ID and Nalog ID to the backend
+  // Submit the selected Brojilo ID and Nalog ID to the backend using Axios instance
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
   
@@ -65,9 +65,9 @@ const BrojiloSelectorForm = () => {
         idBrojilo: selectedBrojiloId, // Ensure this is a number too
       };
   
-      await axios.post("http://localhost:8080/api/stavkenaloga/create", payload);
+      await api.post("http://localhost:8080/api/stavkenaloga/create", payload);
       alert("Stavka Naloga created successfully!");
-      navigate(`/NalogDetails/${nalogId}`)
+      navigate(`/NalogDetails/${nalogId}`);
     } catch (error) {
       console.error("Error creating Stavka Naloga:", error);
       alert("Failed to create Stavka Naloga. Please try again.");

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom"; // Importiramo useParams za dohvat stavkaId iz URL-a
 import OcitanjeForm from "./OcitanjeForm";
 import "./../styles/StavkaNalogaDetails.css";
+import api from "./loginScripts/axios"; // Importanje instancu Axios-a
 
 type Ocitanje = {
   id: number;
@@ -15,7 +16,7 @@ type Brojilo = {
   id: number;
   serijskiBrojBrojilo: string;
   tipBrojila: string;
-  adresa: string;// Dodaj atribute Brojila ako ih treba prikazati
+  adresa: string;
 };
 
 type StavkaNaloga = {
@@ -31,10 +32,16 @@ const StavkaNalogaDetails: React.FC = () => {
   const [showOcitanjeForm, setShowOcitanjeForm] = useState(false); // State for showing OcitanjeForm
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/stavkenaloga/${stavkaId}`)
-      .then((response) => response.json())
-      .then((data) => setStavkaNaloga(data))
-      .catch((error) => console.error("Error fetching stavka naloga details:", error));
+    const fetchStavkaNaloga = async () => {
+      try {
+        const response = await api.get(`http://localhost:8080/api/stavkenaloga/${stavkaId}`);
+        setStavkaNaloga(response.data);
+      } catch (error) {
+        console.error("Error fetching stavka naloga details:", error);
+      }
+    };
+
+    fetchStavkaNaloga();
   }, [stavkaId]);
 
   if (!stavkaNaloga) {
