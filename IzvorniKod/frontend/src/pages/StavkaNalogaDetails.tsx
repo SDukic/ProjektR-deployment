@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom"; // Importiramo useParams za dohvat stavkaId iz URL-a
+import { useParams, Link } from "react-router-dom"; 
+import { useAuth } from "./loginScripts/AuthContext"; // Importiramo AuthContext
 import OcitanjeForm from "./OcitanjeForm";
 import "./../styles/StavkaNalogaDetails.css";
-import api from "./loginScripts/axios"; // Importanje instancu Axios-a
+import api from "./loginScripts/axios"; 
 
 type Ocitanje = {
   id: number;
@@ -28,8 +29,9 @@ type StavkaNaloga = {
 
 const StavkaNalogaDetails: React.FC = () => {
   const { stavkaId } = useParams<{ stavkaId: string }>(); // Dohvaćamo stavkaId iz URL-a
+  const { role } = useAuth();  // Dohvatimo trenutnu ulogu iz AuthContext
   const [stavkaNaloga, setStavkaNaloga] = useState<StavkaNaloga | null>(null);
-  const [showOcitanjeForm, setShowOcitanjeForm] = useState(false); // State for showing OcitanjeForm
+  const [showOcitanjeForm, setShowOcitanjeForm] = useState(false); 
 
   useEffect(() => {
     const fetchStavkaNaloga = async () => {
@@ -49,16 +51,21 @@ const StavkaNalogaDetails: React.FC = () => {
   }
 
   const handleOpenOcitanjeForm = () => {
-    setShowOcitanjeForm(true); // Open the form
+    setShowOcitanjeForm(true); 
   };
 
   const handleCloseOcitanjeForm = () => {
-    setShowOcitanjeForm(false); // Close the form
+    setShowOcitanjeForm(false); 
+  };
+
+  // Odredite URL za povratak na temelju uloge
+  const getReturnUrl = () => {
+    return role === "radnik" ? "/RadnikTasks" : "/NalogTable";
   };
 
   return (
     <div className="stavka-naloga-details">
-      <Link to={`/`} className="close-button">
+      <Link to={getReturnUrl()} className="close-button">
         Povratak na Nalog
       </Link>
       <h2>Detalji Stavke Naloga: {stavkaNaloga.id}</h2>
@@ -83,7 +90,7 @@ const StavkaNalogaDetails: React.FC = () => {
       {showOcitanjeForm && (
         <OcitanjeForm
           idStavkaNaloga={stavkaNaloga.id}
-          onClose={handleCloseOcitanjeForm} // Close the form when done
+          onClose={handleCloseOcitanjeForm} 
         />
       )}
 

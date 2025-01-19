@@ -39,7 +39,7 @@ const App: React.FC = () => {
             <Route path="/" element={<ProtectedRoute><NalogTable /></ProtectedRoute>} />
             <Route path="/NalogTable" element={<ProtectedRoute><NalogTable /></ProtectedRoute>} />
             <Route path="/NalogDetails/:nalogId" element={<ProtectedRoute><NalogDetails /></ProtectedRoute>} />
-            <Route path="/StavkaNalogaDetails/:stavkaId" element={<ProtectedRoute><StavkaNalogaDetails /></ProtectedRoute>} />
+           
             <Route path="/StavkaNalogaForm/:nalogId" element={<ProtectedRoute><StavkaNalogaForm /></ProtectedRoute>} />
             <Route path="/kupci" element={<ProtectedRoute><KupacTable /></ProtectedRoute>} />
             <Route path="/radnici" element={<ProtectedRoute><RadnikTable /></ProtectedRoute>} />
@@ -49,6 +49,7 @@ const App: React.FC = () => {
             {/* Radnik can access these routes */}
             <Route path="/RadnikTasks" element={<RadnikTasks />} />
             <Route path="/TaskDetail/:nalogId" element={<TaskDetail />} />
+            <Route path="/StavkaNalogaDetails/:stavkaId" element={<StavkaNalogaDetails />} />
 
           </Routes>
         </div>
