@@ -76,7 +76,7 @@ const BrojiloSelectorForm = () => {
 
   return (
     <div className="brojilo-selector-form">
-      <h2>Select a Brojilo</h2>
+      <h2>Odaberite Brojilo</h2>
       <form onSubmit={handleSubmit}>
         {error && <p className="error-message">{error}</p>}
         {brojila.length === 0 ? (

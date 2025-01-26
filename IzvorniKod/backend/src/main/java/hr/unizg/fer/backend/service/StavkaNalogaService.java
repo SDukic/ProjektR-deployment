@@ -1,5 +1,6 @@
 package hr.unizg.fer.backend.service;
 
+import hr.unizg.fer.backend.DTO.OcitanjeDTO;
 import hr.unizg.fer.backend.DTO.StavkaNalogaDTO;
 import hr.unizg.fer.backend.entity.StavkaNaloga;
 import hr.unizg.fer.backend.repository.StavkaNalogaRepository;
@@ -60,8 +61,18 @@ public class StavkaNalogaService {
                 .orElseThrow(() -> new EntityNotFoundException("Nije pronađena stavka naloga sa id: " + id));
         stavkaNalogaRepository.delete(stavkaNaloga);
     }
-
+    public List<StavkaNaloga> getStavkeNalogaByIdBrojilo(Integer idBrojilo) {
+        return stavkaNalogaRepository.findByIdBrojiloId(idBrojilo);
+    }
     public Optional<StavkaNaloga> findById(Integer id) {
         return stavkaNalogaRepository.findById(id);
+    }
+
+    public List<OcitanjeDTO> getOcitanjaByStavkaId(Integer stavkaId) {
+        StavkaNaloga stavkaNaloga = stavkaNalogaRepository.findById(stavkaId)
+                .orElseThrow(() -> new EntityNotFoundException("Stavka naloga not found"));
+        return stavkaNaloga.getOcitanja().stream()
+                .map(OcitanjeDTO::new)
+                .collect(Collectors.toList());
     }
 }

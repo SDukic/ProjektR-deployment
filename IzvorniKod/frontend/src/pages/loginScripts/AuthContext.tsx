@@ -1,42 +1,56 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-
-
-
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 type AuthContextType = {
   role: string | null;
-  setRole: (role: string | null) => void;
+  radnikId: number | null;
+  login: (role: string, radnikId?: number) => void;
   logout: () => void;
-  login: (role: string) => void;  // Funkcija za postavljanje role prilikom prijave
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [role, setRole] = useState<string | null>(localStorage.getItem("role"));
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [role, setRole] = useState<string | null>(null);
+  const [radnikId, setRadnikId] = useState<number | null>(null);
 
-  const login = (role: string) => {
-    localStorage.setItem("role", role);  // Pohranjivanje role u localStorage
-    setRole(role);  // Postavljanje role u stanje
+  useEffect(() => {
+    const storedRole = localStorage.getItem('role');
+    const storedRadnikId = localStorage.getItem('radnikId');
+    if (storedRole) {
+      setRole(storedRole);
+    }
+    if (storedRadnikId) {
+      setRadnikId(parseInt(storedRadnikId, 10));
+    }
+  }, []);
+
+  const login = (userRole: string, radnikId?: number) => {
+    setRole(userRole);
+    localStorage.setItem('role', userRole);
+    if (userRole === 'radnik' && radnikId) {
+      setRadnikId(radnikId);
+      localStorage.setItem('radnikId', radnikId.toString());
+    }
   };
 
   const logout = () => {
-    localStorage.removeItem("token"); // Uklonite token
-    localStorage.removeItem("role"); // Uklonite ulogu
-    setRole(null); // Resetirajte stanje
+    setRole(null);
+    setRadnikId(null);
+    localStorage.removeItem('role');
+    localStorage.removeItem('radnikId');
   };
 
   return (
-    <AuthContext.Provider value={{ role, setRole, logout, login }}>
+    <AuthContext.Provider value={{ role, radnikId, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = (): AuthContextType => {
+export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };

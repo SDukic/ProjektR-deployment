@@ -1,30 +1,40 @@
 /* NavigationHeader.css */
 .navigation-header {
-    background-color: #3498db;
-    padding: 10px 20px;
-  }
-  
-  .navigation-header nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: space-around;
-  }
-  
-  .navigation-header nav ul li {
-    display: inline;
-  }
-  
-  .navigation-header nav ul li a {
-    color: white;
-    text-decoration: none;
-    padding: 8px 16px;
-    font-size: 16px;
-    border-radius: 5px;
-  }
-  
-  .navigation-header nav ul li a:hover {
-    background-color: #000d9d;
-  }
-  
+  background-color: #3498db;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center; /* Vertikalno centriranje */
+  justify-content: center; /* Horizontalno centriranje */
+}
+
+.navigation-header nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center; /* Centriranje sadržaja */
+  align-items: center; /* Vertikalno centriranje */
+}
+
+.navigation-header nav ul li {
+  display: inline;
+  margin: 0 10px; /* Razmak između gumba */
+}
+
+.navigation-header nav ul li a,
+.navigation-header nav ul li button {
+  color: #3498db; /* Plava boja teksta */
+  text-decoration: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: white; /* Bijela boja pozadine */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.navigation-header nav ul li a:hover,
+.navigation-header nav ul li button:hover {
+  background-color: #f2f2f2; /* Svijetlo siva boja za hover */
+}

@@ -13,8 +13,8 @@ import java.util.List;
 public class OcitanjeService {
     @Autowired
     private final OcitanjeRepository ocitanjeRepository;
-
-    public OcitanjeService(OcitanjeRepository ocitanjeRepository){
+    @Autowired
+    public OcitanjeService(OcitanjeRepository ocitanjeRepository) {
         this.ocitanjeRepository = ocitanjeRepository;
     }
 

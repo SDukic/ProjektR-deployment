@@ -1,0 +1,50 @@
+.nalog-container {
+    padding: 20px;
+  }
+  
+  .title {
+    text-align: center;
+  }
+  
+  .filter-button, .create-nalog-button, .status-button, .details-button, .delete-nalog-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #2196F3; /* Plava boja */
+    color: white;
+    transition: background-color 0.3s;
+  }
+  
+  .filter-button:hover, .create-nalog-button:hover, .status-button:hover, .details-button:hover, .delete-nalog-button:hover {
+    background-color: #0b7dda; /* Tamnija plava boja za hover */
+  }
+  
+  .filter-options {
+    margin-bottom: 20px;
+  }
+  
+  .filter-group {
+    margin-bottom: 10px;
+  }
+  
+  .filter-input {
+    margin-right: 10px;
+    padding: 5px;
+  }
+  
+  .nalog-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .nalog-table th, .nalog-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .nalog-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+  }

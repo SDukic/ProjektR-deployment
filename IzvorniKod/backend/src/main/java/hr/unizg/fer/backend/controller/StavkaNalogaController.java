@@ -10,6 +10,7 @@ import hr.unizg.fer.backend.service.BrojiloService;
 import hr.unizg.fer.backend.service.NalogService;
 import hr.unizg.fer.backend.service.OcitanjeService;
 import hr.unizg.fer.backend.service.StavkaNalogaService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -89,6 +90,17 @@ public class StavkaNalogaController {
         return stavkaNalogaService.createStavkaNaloga(stavkaNaloga);
     }
 
+    @GetMapping("/{stavkaId}/ocitanja")
+    public ResponseEntity<List<OcitanjeDTO>> getOcitanjaByStavkaId(@PathVariable Integer stavkaId) {
+        try {
+            List<OcitanjeDTO> ocitanja = stavkaNalogaService.getOcitanjaByStavkaId(stavkaId);
+            return ResponseEntity.ok(ocitanja);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
     @PutMapping("/update/{id}")
     public StavkaNaloga updateStavkaNaloga(@PathVariable Integer id, @RequestBody StavkaNaloga stavkaNaloga) {

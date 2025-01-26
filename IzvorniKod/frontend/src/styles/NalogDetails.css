@@ -17,20 +17,30 @@
   margin-bottom: 15px;
 }
 
+.nalog-details h1 {
+  text-align: center;
+}
+
+.nalog-details p {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
 /* Close button styling */
 .close-button {
-  background-color: #dc3545;
-  color: #fff;
-  border: none;
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff;
+  text-decoration: none;
   border-radius: 4px;
-  padding: 8px 12px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 
 .close-button:hover {
-  background-color: #b02a37;
+  background-color: #0056b3;
 }
 
 /* Stavka list styling */
@@ -73,4 +83,89 @@
 
 .ocitanja-table tr:hover {
   background-color: #e9ecef;
+}
+
+.status-button, .delete-nalog-button, .open-form-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  margin: 10px;
+  transition: background-color 0.3s;
+}
+
+.status-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.status-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-nalog-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.delete-nalog-button:hover {
+  background-color: #0056b3;
+}
+
+.open-form-button {
+  background-color: #2196F3;
+  color: white;
+}
+
+.open-form-button:hover {
+  background-color: #0b7dda;
+}
+
+/* Checkmark and no-ocitanje styling */
+.checkmark {
+  color: green;
+  font-size: 1.5em;
+}
+
+.no-ocitanje {
+  color: red;
+  font-size: 1.5em;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.add-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: #0056b3;
+}
+
+.radnik-form {
+  margin-top: 20px;
+}
+
+.save-button, .cancel-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-button:hover, .cancel-button:hover {
+  background-color: #0056b3;
 }

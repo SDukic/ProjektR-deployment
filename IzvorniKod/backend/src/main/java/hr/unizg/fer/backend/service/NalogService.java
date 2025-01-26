@@ -102,7 +102,6 @@ public class NalogService {
     }
 
 
-
     public Optional<Nalog> findNalogById(Integer id) {
         return nalogRepository.findById(id);
     }

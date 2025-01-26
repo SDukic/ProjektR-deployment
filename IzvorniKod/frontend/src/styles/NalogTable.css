@@ -1,48 +1,123 @@
 .nalog-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .title {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .nalog-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #f9f9f9;
-  }
-  
-  .nalog-table thead tr {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  .nalog-table th, .nalog-table td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-  }
-  
-  .nalog-table tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .details-button {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .details-button:hover {
-    background-color: #0056b3;
-  }
-  
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.nalog-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #f9f9f9;
+}
+
+.nalog-table thead tr {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.nalog-table th, .nalog-table td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.nalog-table th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.nalog-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.filter-button, .create-nalog-button, .status-button, .details-button, .delete-nalog-button, .sort-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #2196F3; /* Plava boja */
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.filter-button:hover, .create-nalog-button:hover, .status-button:hover, .details-button:hover, .delete-nalog-button:hover, .sort-button:hover {
+  background-color: #0b7dda; /* Tamnija plava boja za hover */
+}
+
+.filter-button {
+  margin-bottom: 20px;
+}
+
+.filter-options {
+  margin-bottom: 20px;
+}
+
+.filter-group {
+  margin-bottom: 10px;
+}
+
+.filter-input {
+  margin-left: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.create-nalog-button {
+  margin-bottom: 20px;
+}
+
+.status-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.status-button:hover {
+  background-color: #45a049;
+}
+
+.delete-nalog-button {
+  background-color: grey;
+  color: white;
+}
+
+.delete-nalog-button:hover {
+  background-color: red;
+}
+
+.sort-group {
+  margin: 10px 0;
+}
+
+.radnik-info {
+  margin: 20px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.radnik-info p {
+  margin: 5px 0;
+}
+
+.filter-button, .create-nalog-button, .sort-button {
+  margin: 10px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.filter-button:hover, .create-nalog-button:hover, .sort-button:hover {
+  background-color: #0056b3;
+}

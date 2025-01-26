@@ -1,6 +1,7 @@
 package hr.unizg.fer.backend.service;
 
 import hr.unizg.fer.backend.DTO.BrojiloDTO;
+import hr.unizg.fer.backend.DTO.StavkaNalogaDTO;
 import hr.unizg.fer.backend.entity.Brojilo;
 import hr.unizg.fer.backend.entity.Kupac;
 import hr.unizg.fer.backend.entity.Nalog;
@@ -79,6 +80,14 @@ public class BrojiloService {
             brojilo.setIdKupac(kupac);
         }
         return brojilo;
+    }
+
+    public List<StavkaNalogaDTO> getStavkeNalogaByBrojiloId(Integer brojiloId) {
+        Brojilo brojilo = brojiloRepository.findById(brojiloId)
+                .orElseThrow(() -> new EntityNotFoundException("Brojilo not found"));
+        return brojilo.getStavkaNaloga().stream()
+                .map(StavkaNalogaDTO::new)
+                .collect(Collectors.toList());
     }
 
     public Optional<Brojilo> findBrojiloById(Integer brojiloId) {

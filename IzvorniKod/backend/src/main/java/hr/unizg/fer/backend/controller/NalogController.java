@@ -73,7 +73,7 @@ public class NalogController {
         return nalogService.updateNalog(id, nalog);
     }
 
-    @PutMapping("{idNalog}/dodjeliRadnika/{idRadnik}")
+    @PutMapping("{idNalog}/dodijeliRadnika/{idRadnik}")
     public ResponseEntity<Nalog> updateNalogRadnik(
             @PathVariable Integer idNalog,
             @PathVariable Integer idRadnik) {
