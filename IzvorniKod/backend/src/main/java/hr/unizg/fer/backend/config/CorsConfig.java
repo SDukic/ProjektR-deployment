@@ -18,7 +18,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Omogućava CORS za sve endpointove
-                        .allowedOrigins(frontendUrl) // React frontend URL
+                        .allowedOrigins(frontendUrl, "https://frontend-latest-4ntd.onrender.com") // React frontend URL
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Dozvoljeni HTTP metodi
                         .allowedHeaders("*") // Dozvoljeni headeri
                         .allowCredentials(true); // Omogućava slanje kolačića ili autentifikacije

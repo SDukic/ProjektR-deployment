@@ -26,7 +26,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:5173");
-        configuration.addAllowedOrigin("http://https://frontend-latest-4ntd.onrender.com");// Omogućite pristup s vaše frontend domene
+        configuration.addAllowedOrigin("https://frontend-latest-4ntd.onrender.com");// Omogućite pristup s vaše frontend domene
         configuration.addAllowedMethod("GET");
         configuration.addAllowedMethod("POST");
         configuration.addAllowedMethod("PUT");
