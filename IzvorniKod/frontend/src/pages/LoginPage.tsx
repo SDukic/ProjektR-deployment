@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './loginScripts/AuthContext';
+import api from './loginScripts/axios';
 
 const LoginPage: React.FC = () => {
   const [identifier, setIdentifier] = useState<string>('');
@@ -17,16 +18,10 @@ const LoginPage: React.FC = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-      });
+      const response = await api.post('/login', credentials); // Koristi novu instancu api za POST zahtjev
 
-      if (response.ok) {
-        const data = await response.json();
+      if (response.status === 200) {
+        const data = response.data;
         localStorage.setItem('token', data.token);
 
         if (data.role === 'admin') {
@@ -44,7 +39,6 @@ const LoginPage: React.FC = () => {
       alert('An error occurred. Please try again later.');
     }
   };
-
   return (
     <div style={styles.container}>
       <form onSubmit={handleLogin} style={styles.form}>
