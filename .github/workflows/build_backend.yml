@@ -47,7 +47,7 @@ jobs:
         with:
           context: ./IzvorniKod/backend
           push: true
-          tags: ghcr.io/SDukic/ProjektR-deployment:latest
+          tags: ghcr.io/sdukic/ProjektR-deployment:latest
 
       - name: Trigger release
         if: ${{ env.BACKEND_DEPLOY_HOOK }}
