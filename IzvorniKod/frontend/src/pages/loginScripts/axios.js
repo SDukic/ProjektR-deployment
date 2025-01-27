@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Kreirajte instancu Axios-a
 const api = axios.create({
-  baseURL: 'http://localhost:8080/api', // Postavite svoju osnovnu URL adresu servera
+  baseURL: `${import.meta.env.VITE_API_URL}`, // Postavite svoju osnovnu URL adresu servera
 });
 
 // Dodajte Interceptor za slanje tokena s svakim zahtjevom

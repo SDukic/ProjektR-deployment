@@ -53,7 +53,7 @@ const RadnikSelectorForm = () => {
 
     try {
       const payload = { idNalog: Number(nalogId), idRadnik: selectedRadnikId };
-      await api.post("http://localhost:8080/api/nalozi/radnik", payload);
+      await api.post("/nalozi/radnik", payload);
       alert("Radnik successfully assigned to the Nalog!");
       navigate(`/NalogDetails/${nalogId}`);
     } catch (err) {

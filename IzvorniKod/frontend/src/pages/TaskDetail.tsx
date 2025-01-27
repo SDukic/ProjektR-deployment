@@ -38,7 +38,7 @@ const TaskDetail: React.FC = () => {
   const handleStatusChange = async (id: number) => {
     try {
       // Dohvati trenutni nalog
-      const response = await api.get(`http://localhost:8080/api/nalozi/${id}`);
+      const response = await api.get(`/nalozi/${id}`);
       const nalogpr = response.data;
 
       let updatedStatus = "null";
@@ -55,7 +55,7 @@ const TaskDetail: React.FC = () => {
       // Ažuriraj nalog
       const updatedNalog = { ...nalogpr, statusNalog: updatedStatus };
 
-      await api.put(`http://localhost:8080/api/nalozi/update/${id}/status`, updatedStatus, {
+      await api.put(`/nalozi/update/${id}/status`, updatedStatus, {
         headers: {
           "Content-Type": "application/json",
         },

@@ -24,7 +24,7 @@ const RadnikTable: React.FC = () => {
   useEffect(() => {
     const fetchRadnici = async () => {
       try {
-        const response = await api.get("http://localhost:8080/api/radnici/all");
+        const response = await api.get("/radnici/all");
         setRadnici(response.data);
       } catch (error) {
         console.error("Error fetching radnici:", error);
@@ -41,7 +41,7 @@ const RadnikTable: React.FC = () => {
     const radnikData = { ...newRadnik, nalogs: [] };
 
     try {
-      const response = await api.post("http://localhost:8080/api/radnici/create", radnikData);
+      const response = await api.post("/radnici/create", radnikData);
       setRadnici((prevRadnici) => [...prevRadnici, response.data]);
       setNewRadnik({ imeRadnik: "", prezimeRadnik: "", telefonRadnik: "", password: "" });
       setShowForm(false);
@@ -53,7 +53,7 @@ const RadnikTable: React.FC = () => {
   // Brisanje radnika s API-jem koristeći Axios
   const handleDeleteRadnik = async (id: number) => {
     try {
-      await api.delete(`http://localhost:8080/api/radnici/delete/${id}`);
+      await api.delete(`/radnici/delete/${id}`);
       setRadnici((prevRadnici) =>
         prevRadnici.filter((radnik) => radnik.id !== id)
       );

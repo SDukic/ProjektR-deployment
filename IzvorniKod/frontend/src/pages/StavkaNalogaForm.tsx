@@ -65,7 +65,7 @@ const BrojiloSelectorForm = () => {
         idBrojilo: selectedBrojiloId, // Ensure this is a number too
       };
   
-      await api.post("http://localhost:8080/api/stavkenaloga/create", payload);
+      await api.post("/stavkenaloga/create", payload);
       alert("Stavka Naloga created successfully!");
       navigate(`/NalogDetails/${nalogId}`);
     } catch (error) {
