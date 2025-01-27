@@ -59,7 +59,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173") // Domena vašeg frontend-a
+                .allowedOrigins("http://localhost:5173", "https://frontend-latest-4ntd.onrender.com") // Domena vašeg frontend-a
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("Content-Type", "Authorization");
     }
