@@ -30,7 +30,7 @@ const TaskDetail: React.FC = () => {
 
   useEffect(() => {
     api
-      .get(`http://localhost:8080/api/nalozi/${nalogId}`)
+      .get(`/nalozi/${nalogId}`)
       .then((response) => setNalog(response.data))
       .catch((error) => console.error("Error fetching nalog details:", error));
   }, [nalogId]);

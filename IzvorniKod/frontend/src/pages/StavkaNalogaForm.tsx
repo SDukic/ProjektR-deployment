@@ -22,7 +22,7 @@ const BrojiloSelectorForm = () => {
   useEffect(() => {
     const fetchBrojila = async () => {
       try {
-        const response = await api.get("http://localhost:8080/api/brojila/all");
+        const response = await api.get("/brojila/all");
         const data = response.data;
 
         if (Array.isArray(data)) {
